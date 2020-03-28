@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    void loadContents(String url) throws IOException;
+    void loadContents(String[] url) throws IOException;
     List<Product> listProducts() throws IOException;
     Product createProduct(String name, String url, String imgUrl);
     Product getProduct(Long productId);

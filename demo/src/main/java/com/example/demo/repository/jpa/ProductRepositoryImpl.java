@@ -2,6 +2,7 @@ package com.example.demo.repository.jpa;
 
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,7 +20,16 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        return this.repository.save(product);
+        //PROBAJ DA GI ISKLUCHISH PORAKITE ZA GRESHKA SqlExceptionHelper  (se sho probav ne uspea...)
+        try {
+            return this.repository.save(product);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Duplicate found, skipping");
+        }
+
+        return product;
+
+//        return this.repository.save(product);
     }
 
     @Override

@@ -8,7 +8,9 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "PRODUCTS")
+//@Table(name = "PRODUCTS")
+//OVA E ZA DA NE SE DODAVAAT NA SEKOE VO BAZATA
+@Table(name = "PRODUCTS",uniqueConstraints={@UniqueConstraint(columnNames={"url"})})
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
