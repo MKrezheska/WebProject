@@ -44,24 +44,16 @@ public class WorkerNep implements Runnable {
             java.util.logging.Logger.getLogger("org.apache.http").setLevel(java.util.logging.Level.OFF);
 
             WebClient webClient = new WebClient(BrowserVersion.FIREFOX_68);
-            webClient.getOptions().setJavaScriptEnabled(true); // MORA ZA NEPTUN
-            //NE BRISHI ZNAM DEKA VADI WARNING AMA MORA ZA NEPTUN
+            webClient.getOptions().setJavaScriptEnabled(true);
             webClient.setJavaScriptErrorListener(new SilentJavaScriptErrorListener());
-            webClient.getOptions().setCssEnabled(false); // ZA POBRZO DEMEK
+            webClient.getOptions().setCssEnabled(false);
             webClient.getOptions().setThrowExceptionOnScriptError(false);
             webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-            webClient.getOptions().setTimeout(10 * 1000); // ZA POBRZO DEMEK
-            webClient.setAjaxController(new NicelyResynchronizingAjaxController()); //PROKLET NEPTUN
+            webClient.getOptions().setTimeout(10 * 1000);
+            webClient.setAjaxController(new NicelyResynchronizingAjaxController());
 
 
             HtmlPage page = webClient.getPage(url);
-            //NE SUM SIGURNA DALI OVA TREBA
-            //AMA MISLAM DEKA TREBA ZA DA SE VCHITAAT SITE PRODUKTI
-//            webClient.waitForBackgroundJavaScriptStartingBefore(200);
-            // CHEKAJ 100 SEKUNDI
-            //VKUPNO SE 389 PRODUKTI (AKO NE TI SE VCHITAT SITE ODKOMENTIRAJ GO TO POGORE ILI ZGOLEMI GI SEKUNDITE)
-            //KE TI IZLEGVAT WARNINGS POVRZANI SO HTMLUNIT
-            //NE SE SEKIRAJ ZARADI SKRIPTITE NA NEPTUN E (mislam...)
             webClient.waitForBackgroundJavaScript(100 * 1000);
 
             String pageAsXml = page.asXml();

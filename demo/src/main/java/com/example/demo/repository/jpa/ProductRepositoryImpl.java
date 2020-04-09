@@ -20,7 +20,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        //PROBAJ DA GI ISKLUCHISH PORAKITE ZA GRESHKA SqlExceptionHelper  (se sho probav ne uspea...)
         try {
             return this.repository.save(product);
         } catch (DataIntegrityViolationException e) {
