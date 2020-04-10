@@ -13,5 +13,7 @@ public interface ProductRepository {
 
     Optional<Product> findById(Long productId);
 
+    Optional<Product> findByName(String name);
+
     void deleteById(Long productId);
 }

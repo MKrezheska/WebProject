@@ -42,6 +42,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public Optional<Product> findByName(String name) {
+        return this.repository.findByName(name);
+    }
+
+    @Override
     public void deleteById(Long productId) {
         this.repository.deleteById(productId);
     }

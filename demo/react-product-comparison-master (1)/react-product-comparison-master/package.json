@@ -1,0 +1,24 @@
+{
+  "name": "react-product-comparison",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "prop-types": "^15.6.2",
+    "pure-react-carousel": "^1.27.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-js-pagination": "^3.0.3",
+    "react-paginate": "^6.3.2",
+    "react-paginating": "^1.4.0",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
