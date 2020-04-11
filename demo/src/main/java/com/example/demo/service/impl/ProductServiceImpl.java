@@ -66,6 +66,9 @@ public class ProductServiceImpl implements ProductService {
         ArrayList<String> productRepo = new ArrayList<>(500);
         ArrayList<String> imgRepo = new ArrayList<>(500);
         ArrayList<String> nameRepo = new ArrayList<>(500);
+        ArrayList<String> priceRepo=new ArrayList<>(500);
+        ArrayList<String> clubPriceRepo=new ArrayList<>(500);
+        ArrayList<String> pricePartialRepo=new ArrayList<>(500);
 
         for (WorkerNep w : workers) {
             ArrayList<String> results = w.waitForResults();
@@ -73,15 +76,48 @@ public class ProductServiceImpl implements ProductService {
                 productRepo.addAll(w.getProductUrls());
                 imgRepo.addAll(w.getProductImgs());
                 nameRepo.addAll(w.getProductNames());
+                priceRepo.addAll(w.getProductPrices());
+                clubPriceRepo.addAll(w.getProductClubPrices());
+                pricePartialRepo.addAll(w.getProductPricePartial());
 
             } else
                 System.err.println(w.getName() + " had some error!");
         }
 
+
+        List<WorkerDesc> workers2 = new ArrayList<>(productRepo.size());
+        for (String url : productRepo) {
+            WorkerDesc w = new WorkerDesc(url);
+            workers2.add(w);
+            new Thread(w).start();
+        }
+
+        ArrayList<String> productDesc=new ArrayList<>(500);
+
+        // Retrieve results
+        for (WorkerDesc w : workers2) {
+            ArrayList<String> prodd=w.waitForResults();
+            if (prodd != null) {
+//                System.out.println(w.getName() + ": ");
+//                System.out.println(prodd);
+//                for (String s : prodd) {
+//                    System.out.println(s);
+//                }
+                productDesc.addAll(prodd);
+            }
+            else
+                System.err.println(w.getName()+" had some error!");
+        }
+
+
         for (int i = 0; i < productRepo.size(); i++) {
             createProduct(nameRepo.get(i),
                     productRepo.get(i),
-                    imgRepo.get(i));
+                    imgRepo.get(i),
+                    productDesc.get(i),
+                    priceRepo.get(i),
+                    clubPriceRepo.get(i),
+                    pricePartialRepo.get(i));
         }
 
 
@@ -93,8 +129,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(String name, String url, String imgUrl) {
-        Product product = new Product(Math.abs(new Random().nextLong()), name, url, imgUrl);
+    public Product createProduct(String name, String url, String imgUrl,String description,String price, String clubPrice,String pricePartial) {
+        Product product = new Product(Math.abs(new Random().nextLong()), name, url, imgUrl,description,price,clubPrice,pricePartial);
         return this.productRepository.save(product);
     }
 
@@ -104,11 +140,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long productId, String name, String url, String imgUrl) {
+    public Product updateProduct(Long productId, String name, String url, String imgUrl,String description,String price, String clubPrice,String pricePartial) {
         Product product = this.productRepository.findById(productId).orElseThrow(InvalidProductIdException::new);
         product.setName(name);
         product.setUrl(url);
         product.setImgUrl(imgUrl);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setClubPrice(clubPrice);
+        product.setPricePartial(pricePartial);
         return this.productRepository.save(product);
     }
 

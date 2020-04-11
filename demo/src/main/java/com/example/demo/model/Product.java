@@ -8,8 +8,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-//@Table(name = "PRODUCTS")
-@Table(name = "PRODUCTS",uniqueConstraints={@UniqueConstraint(columnNames={"url"})})
+@Table(name = "PRODUCTS")
+//@Table(name = "PRODUCTS",uniqueConstraints={@UniqueConstraint(columnNames={"url"})})
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -26,6 +26,19 @@ public class Product {
 
     @Column(name = "imgUrl")
     private String imgUrl;
+
+    @Column(name = "prodDesc", length = 2048)
+    private String description;
+
+    @Column(name = "price")
+    private String price;
+
+    @Column(name = "clubPrice")
+    private String clubPrice;
+
+    @Column(name = "pricePartial")
+    private String pricePartial;
+
 
     @Override
     public boolean equals(Object o) {
