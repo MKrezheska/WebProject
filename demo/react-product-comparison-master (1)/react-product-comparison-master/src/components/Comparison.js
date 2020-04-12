@@ -14,8 +14,12 @@ const Comparison = ({products}) =>
                 </thead>
                 <tbody>
                     <tr>
-                        <th className="table-light">Url</th>
-                        {/*{ products.map(product => <td key={`url-td-${product.id}`} className="text-center table-light">{product.url}</td>) }*/}
+                        <th className="table-light">Price</th>
+                        { products.map(product => <td key={`url-td-${product.id}`} className="text-center table-light">{product.price}</td>) }
+                    </tr>
+                    <tr>
+                        <th className="table-light">Description</th>
+                        { products.map(product => <td id="tab-description" key={`description-td-${product.id}`} className="text-center table-light">{addLineBreaks(product)}</td>) }
                     </tr>
 
                 </tbody>
@@ -31,5 +35,23 @@ Comparison.propTypes = {
 const mapStateToProps = state => ({
     products : state.products
 });
+
+const addLineBreaks = (product) => {
+    if (product.description.includes(product.name))
+        return product.description.split('|').slice(1).map((text, index) => (
+            <React.Fragment key={`${text}-${index}`}>
+                {text}
+                <br/>
+            </React.Fragment>
+        ));
+    else
+     return product.description.split('|').map((text, index) => (
+        <React.Fragment key={`${text}-${index}`}>
+            {text}
+            <br/>
+        </React.Fragment>
+    ));
+};
+
 
 export default connect(mapStateToProps)(Comparison);

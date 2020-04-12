@@ -93,7 +93,7 @@ class WorkerDesc implements Runnable {
                             p.add(parse[i]);
                     }
                     List<String> a = p.subList(1, p.size() - 1);
-                    String inp = a.toString();
+                    String inp = String.join(" | ", a).replaceAll("&quot;", "\"");
 //                                String inp =p.toString();
                     productDesc.add(inp);
                 }
@@ -111,7 +111,7 @@ class WorkerDesc implements Runnable {
                                     .equals(Character.UnicodeBlock.CYRILLIC))
                             .mapToObj(i -> parse[i])
                             .collect(Collectors.toCollection(ArrayList::new));
-                    String inp = p.toString();
+                    String inp = String.join(" | ", p).replaceAll("&quot;", "\"");
                     productDesc.add(inp);
 
 

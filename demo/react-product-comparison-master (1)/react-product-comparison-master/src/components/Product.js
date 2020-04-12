@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addProduct, removeProduct } from '../redux/actions';
+import image1 from '../setec-logo.png';
+import image2 from '../neptun_logo.png'
 
 const isBeingCompared = (product, comparedProducts) => {
     return comparedProducts.filter(
@@ -9,11 +11,19 @@ const isBeingCompared = (product, comparedProducts) => {
         ).length;
 };
 
+const logoPicker = (product) => {
+    if (product.url.includes("setec"))
+        return image1;
+    else return image2;
+};
+
 const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedProducts}) =>
-    <div className="col-12 col-md-6 col-lg-3">
+    <div className="col-md-6 col-lg-3 col-sm-6">
         <div className="product">
-            <div className="card">
-                <img className="card-img-top" src={product.imgUrl} alt={product.name} />
+            <div className="card" >
+                <div className="image-container">
+                    <img className="card-img-top" src={product.imgUrl} alt={product.name} style={{width: 228 + "px", height: 228 + "px", objectFit: "scale-down" }}/>
+                </div>
                 <div className="overlay"></div>
                 <div className="middle">
                     {isBeingCompared(product, comparedProducts) ?
@@ -22,13 +32,23 @@ const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedPr
                     }
                 </div>
             </div>
+
             <div className="card-body">
                 <div className="row">
-                    <div className="col-8">
-                        <h5 className="card-title">
-                            {product.name}<br />
-                        </h5>
-                    </div>
+                    <ul className="list-group list-group-flush">
+                        <li className="list-group-item image-container">
+                            <img className="card-img-top" src={logoPicker(product)} alt={product.name} style={{maxWidth: 228 + "px"}}/>
+                        </li>
+                        <li className="list-group-item">
+                            <h5 className="card-title" style={{fontSize: 1.07+"rem"}}>
+                                <a href={product.url}>{product.name}</a><br />
+                            </h5>
+                        </li>
+                        <li className="list-group-item">{product.clubPrice}</li>
+                        <li className="list-group-item font-weight-bold">{product.price}</li>
+                        <li className="list-group-item "><small className="text-muted">{product.pricePartial}</small></li>
+
+                    </ul>
 
                 </div>
             </div>

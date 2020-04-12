@@ -4,6 +4,7 @@ import { loadProducts } from '../api/api';
 import Product from './Product';
 import ReactPaginate from 'react-paginate';
 
+
 class Products extends Component {
     constructor(props) {
         super(props);
@@ -49,17 +50,17 @@ class Products extends Component {
         if (this.state.pageCount > 1) {
             paginationElement = (
                 <ReactPaginate
-                    previousLabel={"← Previous"}
-                    nextLabel={"Next →"}
-                    breakLabel={<span className="gap">...</span>}
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    breakClassName={'break-me'}
                     pageCount={this.state.pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={4}
                     onPageChange={this.handlePageClick}
-                    forcePage={this.state.currentPage}
-                    containerClassName={"pagination"}
-                    previousLinkClassName={"previous_page"}
-                    nextLinkClassName={"next_page"}
-                    disabledClassName={"disabled"}
-                    activeClassName={"active"}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
                 />
             );
         }
