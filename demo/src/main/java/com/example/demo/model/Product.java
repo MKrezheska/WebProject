@@ -16,6 +16,7 @@ import java.util.Objects;
 public class Product {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     @Column(name = "productName")
@@ -39,6 +40,15 @@ public class Product {
     @Column(name = "pricePartial")
     private String pricePartial;
 
+    public Product(String name, String url, String imgUrl, String description, String price, String clubPrice, String pricePartial) {
+        this.name = name;
+        this.url = url;
+        this.imgUrl = imgUrl;
+        this.description = description;
+        this.price = price;
+        this.clubPrice = clubPrice;
+        this.pricePartial = pricePartial;
+    }
 
     @Override
     public boolean equals(Object o) {
