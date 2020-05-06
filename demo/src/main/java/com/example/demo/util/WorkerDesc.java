@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+package com.example.demo.util;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-class WorkerDesc implements Runnable {
+public class WorkerDesc implements Runnable {
 
     private String url;
     private Element results;
