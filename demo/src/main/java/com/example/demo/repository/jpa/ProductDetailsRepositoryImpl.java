@@ -5,6 +5,7 @@ import com.example.demo.model.ProductDetails;
 import com.example.demo.repository.ProductDetailsRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -31,4 +32,11 @@ public class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
     public void deleteById(Long productId) {
         this.repository.deleteById(productId);
     }
+
+    @Override
+    public List<ProductDetails> searchProducts(String display, String graphicsCard, String internalMemory, String memory, String processor, String resolution) {
+        return this.repository.searchProducts(display, graphicsCard, internalMemory, memory, processor, resolution);
+    }
+
+
 }

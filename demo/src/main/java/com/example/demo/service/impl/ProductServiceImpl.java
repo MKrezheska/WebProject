@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Product;
+import com.example.demo.model.ProductDetails;
 import com.example.demo.model.exceptions.InvalidProductIdException;
 import com.example.demo.repository.ProductDetailsRepository;
 import com.example.demo.repository.ProductRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -115,9 +117,8 @@ public class ProductServiceImpl implements ProductService {
                     clubPriceRepo.get(i),
                     pricePartialRepo.get(i));
             // ovde da ja povikuvame funkcijata so ke vrakjat lista od properties za dadeno description vo properties lista
-            ArrayList<String> properties=getProperties(productDesc.get(i));
+            ArrayList<String> properties = getProperties(productDesc.get(i));
             productDetailsRepository.save(properties.get(0), properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), product);
-
 
 
         }
@@ -126,18 +127,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
-    public static  ArrayList<String> getProperties(String description) {
+    public static ArrayList<String> getProperties(String description) {
         String[] properties = description.split("\\|");
         String toReturn;
 
-        ArrayList<String> propertiesToReturn=new ArrayList<>();
-        String[] tmp=null;
-        int fl=0;
-        int fl1=0;
-        int fl2=0;
-        int fl3=0;
-        int fl4=0;
+        ArrayList<String> propertiesToReturn = new ArrayList<>();
+        String[] tmp = null;
+        int fl = 0;
+        int fl1 = 0;
+        int fl2 = 0;
+        int fl3 = 0;
+        int fl4 = 0;
 
         String display = "Not found";
         String graphicsCard = "Not found";
@@ -148,33 +148,32 @@ public class ProductServiceImpl implements ProductService {
 
         for (String property : properties) {
             if (property.matches("(.*)[nN][vV][iI][dD][iI][aA](.*)|(.*)NVDIA(.*)|( *)GeForce(.*)|(.*)Itegrated VGA(.*)|(.*)Intel UHD (620|605)(.*)|(.*)Integrated Graphic Card(.*)|((.*)(Intel|AMD)(.*)[gG]raphics(.*))|(.*)Integrated(.*)VGA(.*)|(.*)Intel(.*)VGA(.*)|(.*)R[aA][dD][eE][oO][nN](.*)|(.*)Integrated graphics UMA(.*)|(.*)V[eE][gG][aA](.*)|(.*)Intel HD 620(.*)|(.*)UMA graphics(.*)|(.*)HD Graphics 620(.*)")) {
-                if (property.contains("processor") || property.contains("Processor")|| property.contains("Core")) {
+                if (property.contains("processor") || property.contains("Processor") || property.contains("Core")) {
                     tmp = property.split(",");
                     if (tmp.length == 1)
                         tmp = tmp[0].split("z  ");
                     graphicsCard = (tmp[tmp.length - 1].trim());
-                } else  if(fl1==1){
-                    String temp=graphicsCard;
-                    temp = temp + " + "+property;
-                    graphicsCard=temp.trim();
-                }
-                else {
+                } else if (fl1 == 1) {
+                    String temp = graphicsCard;
+                    temp = temp + " + " + property;
+                    graphicsCard = temp.trim();
+                } else {
                     fl1 = 1;
-                    graphicsCard=property.trim();
+                    graphicsCard = property.trim();
                 }
             }
             if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)")) {
                 if (fl2 == 1) {
                     String temp = memory;
                     temp = temp + " + " + property;
-                    memory=temp.trim();
+                    memory = temp.trim();
                 } else {
                     fl2 = 1;
                     if (property.contains(",") && property.contains("/")) {
                         tmp = property.split("/");
                         for (String s : tmp) {
                             if (s.contains("SSD") || s.contains("HDD")) {
-                                memory=s.split(",")[0].trim();
+                                memory = s.split(",")[0].trim();
                             }
 
                         }
@@ -182,16 +181,16 @@ public class ProductServiceImpl implements ProductService {
                         tmp = property.split(",");
                         for (String s : tmp) {
                             if (s.contains("SSD") || s.contains("HDD"))
-                                memory=s.trim();
+                                memory = s.trim();
                         }
                     } else if (property.contains("/")) {
                         tmp = property.split("/");
                         for (String s : tmp) {
                             if (s.contains("SSD") || s.contains("HDD"))
-                                memory=s.trim();
+                                memory = s.trim();
                         }
                     } else
-                        memory=property.trim();
+                        memory = property.trim();
                 }
             }
             if (property.matches("( *)(4|8|12|16)GB( *)|(.*)DDR4(.*)|(.*)LPDDR3(.*)|( *)4GB DDR3( *)|(.*) RAM(.*)")) {
@@ -199,59 +198,69 @@ public class ProductServiceImpl implements ProductService {
                     tmp = property.split(",");
                     for (String s : tmp) {
                         if (s.contains("RAM"))
-                            internalMemory=s.trim();
+                            internalMemory = s.trim();
                     }
                 } else if (property.contains("Intel")) {
                     tmp = property.split("s");
-                    internalMemory=tmp[1].trim();
+                    internalMemory = tmp[1].trim();
 
-                }else {
-                    internalMemory=property.trim();
+                } else {
+                    internalMemory = property.trim();
 
                 }
             }
             if (property.matches("(.*)(Core|Pentium|Celeron|Atom|Athlon|AMD R5|Ryzen|A4-9120C|E2124G)(.*)|( *)(i7-8565U|i3-7020U)(.*)")) {
-                if(fl==1){
-                    processor=property.trim();
-                }
-                else {
+                if (fl == 1) {
+                    processor = property.trim();
+                } else {
                     fl = 1;
-                    processor=property.trim();
+                    processor = property.trim();
                 }
+                if(processor.contains("(") && processor.trim().indexOf("(") == 0)
+                    processor = processor.replaceAll("[()]", "");
+                if(processor.contains(","))
+                    processor = processor.substring(0, processor.indexOf(","));
+                if(processor.contains("("))
+                    processor = processor.substring(0, processor.indexOf("("));
+                if(processor.contains(".") && processor.indexOf(".") == 0)
+                    processor = processor.substring(1);
+                processor = processor.replaceAll("&trade;|&reg;|[)]", "");
+                processor = processor.trim();
             }
             if (property.matches(".*[0-9]\\.?[0-9]{2,3}\\s{0,2}[xX]\\s{0,2}[0-9]\\.?[0-9]{2,3}.*|.*Dimensions.*")) {
                 Pattern p = Pattern.compile("[0-9]\\.?[0-9]{2,3}\\s{0,2}[xX]\\s{0,2}[0-9]\\.?[0-9]{2,3}");
                 Matcher mt = p.matcher(property);
                 if (mt.find()) {
                     if (fl3 == 1) {
-                        resolution=mt.group();
+                        resolution = mt.group();
                     } else {
                         fl3 = 1;
-                        resolution=mt.group();
+                        resolution = mt.group();
                     }
                 }
-            }else if(property.matches("\\s+[0-9]{3,4}-[0-9]{3,4}\\s+")){
+            } else if (property.matches("\\s+[0-9]{3,4}-[0-9]{3,4}\\s+")) {
                 toReturn = property.replace("-", "x").trim();
-                resolution=toReturn;
+                resolution = toReturn;
             }
 
             if (property.matches("(.*)[1-9][0-9]( *)(,|\\.)*( *)[0-9]*( *)(\"|\\&quot;|-( *)i)(.*)|(.*)14.0(.*)|( *)15.6(.*)")) {
                 Pattern p = Pattern.compile("[1-9][0-9]( *)(,|\\.)*( *)[0-9]*( *)(\"|\\&quot;|-( *)i)|14.0|15.6");
-                String temp="";
+                String temp = "";
                 Matcher mt = p.matcher(property);
                 if (mt.find()) {
-                    temp=mt.group();
-                    if(mt.group().contains("quot;"))
-                        temp=mt.group().split("\\&")[0];
-                    else if(mt.group().contains("-i"))
-                        temp=mt.group().split("-")[0];
+                    temp = mt.group();
+                    if (mt.group().contains("quot;"))
+                        temp = mt.group().split("\\&")[0];
+                    else if (mt.group().contains("-i"))
+                        temp = mt.group().split("-")[0];
                     if (fl4 == 1) {
-                        display=temp;
+                        display = temp;
                     } else {
                         fl4 = 1;
-                        display=temp;
+                        display = temp;
                     }
                 }
+                display = display.replace(",", ".");
             }
         }
         propertiesToReturn.add(display);
@@ -260,7 +269,6 @@ public class ProductServiceImpl implements ProductService {
         propertiesToReturn.add(memory);
         propertiesToReturn.add(processor);
         propertiesToReturn.add(resolution);
-
 
 
         return propertiesToReturn;
@@ -427,4 +435,11 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository.deleteById(productId);
 
     }
+
+    @Override
+    public List<ProductDetails> searchProducts(String display, String graphicsCard, String internalMemory, String memory, String processor, String resolution) {
+        return this.productDetailsRepository.searchProducts(display, graphicsCard, internalMemory, memory, processor, resolution);
+    }
+
+
 }
