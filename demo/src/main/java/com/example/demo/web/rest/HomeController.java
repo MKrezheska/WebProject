@@ -28,7 +28,7 @@ public class HomeController {
         return productService.listProducts();
     }
 
-    @GetMapping("/detailed")
+    @GetMapping("/filter")
     public List<Product> searchProducts(@RequestParam(defaultValue = "", required = false) String display,
                                                @RequestParam(defaultValue = "", required = false) String graphicsCard,
                                                @RequestParam(defaultValue = "", required = false) String internalMemory,

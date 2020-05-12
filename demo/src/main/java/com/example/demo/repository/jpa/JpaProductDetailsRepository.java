@@ -11,13 +11,20 @@ import java.util.Optional;
 
 public interface JpaProductDetailsRepository extends JpaRepository<ProductDetails, Long> {
 
-    @Query("select c from ProductDetails c " +
-            "WHERE c.display like %:display% " +
-            "and c.graphicsCard like %:graphicsCard%" +
-            "and c.internalMemory like %:internalMemory% " +
-            "and c.memory like %:memory% " +
+
+    @Query(value = "select * from products_details c " +
+            "WHERE  CONCAT('%',:memory,'%') LIKE" +
+            "              CASE WHEN c.memory LIKE CONCAT('%Two%') THEN " +
+            "                CONCAT('%Two%')" +
+            "              WHEN c.memory ~ CONCAT('[^+]*',:memory,'[^+]*') THEN " +
+            "                CONCAT('%',:memory,'%')" +
+            "             END " +
+            "and c.display like %:display% " +
+            "and c.graphics_card like %:graphicsCard% " +
+            "and c.internal_memory ~ CONCAT('^(RAM |RAM: ?|Меморија: )?',:internalMemory)" +
             "and c.processor like %:processor% " +
-            "and c.resolution like %:resolution%")
+            "and c.resolution like %:resolution%"
+            , nativeQuery=true)
     List<ProductDetails> searchProducts(@Param("display") String display,
                                         @Param("graphicsCard") String graphicsCard,
                                         @Param("internalMemory") String internalMemory,

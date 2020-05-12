@@ -165,7 +165,8 @@ public class ProductServiceImpl implements ProductService {
             if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)")) {
                 if (fl2 == 1) {
                     String temp = memory;
-                    temp = temp + " + " + property;
+                    if(!memory.trim().equals(property.trim()))
+                        temp = temp + " +  " + property;
                     memory = temp.trim();
                 } else {
                     fl2 = 1;
@@ -191,6 +192,10 @@ public class ProductServiceImpl implements ProductService {
                         }
                     } else
                         memory = property.trim();
+                    if(memory.contains("+")) {
+                        memory = "TwoHDD: " + memory;
+                    }
+
                 }
             }
             if (property.matches("( *)(4|8|12|16)GB( *)|(.*)DDR4(.*)|(.*)LPDDR3(.*)|( *)4GB DDR3( *)|(.*) RAM(.*)")) {
@@ -273,132 +278,7 @@ public class ProductServiceImpl implements ProductService {
 
         return propertiesToReturn;
 
-//        for (int j = 0; j <prod.length ; j++) {
-//            if (prod[j].matches("(.*)[nN][vV][iI][dD][iI][aA](.*)|(.*)NVDIA(.*)|( *)GeForce(.*)|(.*)Itegrated VGA(.*)|(.*)Intel UHD (620|605)(.*)|(.*)Integrated Graphic Card(.*)|((.*)(Intel|AMD)(.*)[gG]raphics(.*))|(.*)Integrated(.*)VGA(.*)|(.*)Intel(.*)VGA(.*)|(.*)R[aA][dD][eE][oO][nN](.*)|(.*)Integrated graphics UMA(.*)|(.*)V[eE][gG][aA](.*)|(.*)Intel HD 620(.*)|(.*)UMA graphics(.*)|(.*)HD Graphics 620(.*)")) {
-//                if (prod[j].contains("processor") || prod[j].contains("Processor")|| prod[j].contains("Core")) {
-//                    tmp = prod[j].split(",");
-//                    if (tmp.length == 1)
-//                        tmp = tmp[0].split("z  ");
-//                    gpu.add(tmp[tmp.length - 1].trim());
-//                } else  if(fl1==1){
-//                    System.out.println(prod[j]);
-//                    String temp=gpu.get(gpu.size()-1);
-//                    gpu.remove(gpu.size()-1);
-//                    temp = temp + " + "+prod[j];
-//                    gpu.add(temp.trim());
-//                }
-//                else {
-//                    fl1 = 1;
-//                    gpu.add(prod[j].trim());
-//                }
-//            }
-//            if (prod[j].matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)")) {
-//                if (fl2 == 1) {
-//                    System.out.println(prod[j]);
-//                    String temp = m.get(m.size() - 1);
-//                    m.remove(m.size() - 1);
-//                    temp = temp + " + " + prod[j];
-//                    m.add(temp.trim());
-//                } else {
-//                    fl2 = 1;
-//                    if (prod[j].contains(",") && prod[j].contains("/")) {
-//                        System.out.println(prod[j]);
-//                        tmp = prod[j].split("/");
-//                        for (String s : tmp) {
-//                            if (s.contains("SSD") || s.contains("HDD")) {
-////                                    s.split(",")[0]
-//                                m.add(s.split(",")[0].trim());
-//                                System.out.println(s.split(",")[0]);
-//                            }
-//
-//                        }
-//                    } else if (prod[j].contains(",")) {
-//                        System.out.println(prod[j]);
-//                        tmp = prod[j].split(",");
-//                        for (String s : tmp) {
-//                            if (s.contains("SSD") || s.contains("HDD"))
-//                                m.add(s.trim());
-//                        }
-//                    } else if (prod[j].contains("/")) {
-//                        System.out.println(prod[j]);
-//                        tmp = prod[j].split("/");
-//                        for (String s : tmp) {
-//                            if (s.contains("SSD") || s.contains("HDD"))
-//                                m.add(s.trim());
-//                        }
-//                    } else
-//                        m.add(prod[j].trim());
-//                }
-//            }
-//            if (prod[j].matches("^( *)(4|8|12|16)GB  $|(.*)DDR4(.*)|(.*)LPDDR3(.*)|( *)4GB DDR3( *)|(.*) RAM(.*)")) {
-//                if (prod[j].contains(",")) {
-//                    tmp = prod[j].split(",");
-//                    for (String s : tmp) {
-//                        if (s.contains("RAM"))
-//                            im.add(s.trim());
-//                    }
-//                } else if (prod[j].contains("Intel")) {
-//                    tmp = prod[j].split("s");
-//
-//                    im.add(tmp[1].trim());
-//
-//                }else {
-//                    im.add(prod[j].trim());
-//
-//                }
-//            }
-//            if (prod[j].matches("(.*)(Core|Pentium|Celeron|Atom|Athlon|AMD R5|Ryzen|A4-9120C|E2124G)(.*)|( *)(i7-8565U|i3-7020U)(.*)")) {
-//                if(fl==1){
-//                    System.out.println(prod[j]);
-//                    cpu.remove(cpu.size()-1);
-//                    cpu.add(prod[j].trim());
-//                }
-//                else {
-//                    fl = 1;
-//                    cpu.add(prod[j].trim());
-//                }
-//            }
-//            if (prod[j].matches(".*[0-9]\\.?[0-9]{2,3}\\s{0,2}[xX]\\s{0,2}[0-9]\\.?[0-9]{2,3}.*|.*Dimensions.*")) {
-//                Pattern p = Pattern.compile("[0-9]\\.?[0-9]{2,3}\\s{0,2}[xX]\\s{0,2}[0-9]\\.?[0-9]{2,3}");
-//                Matcher mt = p.matcher(prod[j]);
-//                if (mt.find()) {
-//                    if (fl3 == 1) {
-//                        System.out.println(mt.group());
-//                        resolution.remove(resolution.size() - 1);
-//                        resolution.add(mt.group());
-//                    } else {
-//                        fl3 = 1;
-//                        resolution.add(mt.group());
-//                    }
-//                }
-//            }else if(prod[j].matches("\\s+[0-9]{3,4}-[0-9]{3,4}\\s+")){
-//                toReturn = prod[j].replace("-", "x").trim();
-//                resolution.add(toReturn);
-//            }
-//
-//            if (prod[j].matches("(.*)[1-9][0-9]( *)(,|\\.)*( *)[0-9]*( *)(\"|\\&quot;|-( *)i)(.*)|(.*)14.0(.*)|( *)15.6(.*)")) {
-////                    System.out.println(prod[j]);
-//                Pattern p = Pattern.compile("[1-9][0-9]( *)(,|\\.)*( *)[0-9]*( *)(\"|\\&quot;|-( *)i)|14.0|15.6");
-////                    Pattern p = Pattern.compile("[1-9][0-9]( *)(,|\\.)*( *)[0-9]*( *)(\")*");
-//                String temp="";
-//                Matcher mt = p.matcher(prod[j]);
-//                if (mt.find()) {
-//                    temp=mt.group();
-//                    if(mt.group().contains("quot;"))
-//                        temp=mt.group().split("\\&")[0];
-//                    else if(mt.group().contains("-i"))
-//                        temp=mt.group().split("-")[0];
-//                    if (fl4 == 1) {
-////                            System.out.println(mt.group());
-//                        display.remove(display.size() - 1);
-//                        display.add(temp);
-//                    } else {
-//                        fl4 = 1;
-//                        display.add(temp);
-//                    }
-//                }
-//            }
-//        }
+
     }
 
     @Override
