@@ -159,6 +159,14 @@ public class ProductServiceImpl implements ProductService {
                 if(graphicsCard.contains("NVDIA")){
                     graphicsCard = graphicsCard.replace("NVDIA", "nVidia");
                 }
+                String temp=graphicsCard.toLowerCase();
+                if(temp.contains("vega")||temp.contains("itegrated")||temp.contains("integrated")||temp.contains("intel")||temp.contains("uma")){
+                    graphicsCard = "Integrated: " + graphicsCard ;
+                }
+                else if(temp.contains("nvidia")|temp.contains("geforce")||temp.contains("radeon")){
+                    graphicsCard = "Dedicated: " + graphicsCard ;
+
+                }
             }
             if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)")) {
                 if (fl2 == 1) {
@@ -268,6 +276,11 @@ public class ProductServiceImpl implements ProductService {
                 display = display.replace(",", ".");
             }
         }
+
+        if(graphicsCard.equals("Not found"))
+                graphicsCard = "Integrated: " + graphicsCard ;
+
+
         propertiesToReturn.add(display);
         propertiesToReturn.add(graphicsCard);
         propertiesToReturn.add(internalMemory);

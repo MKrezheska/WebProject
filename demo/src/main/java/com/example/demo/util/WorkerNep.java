@@ -85,6 +85,9 @@ public class WorkerNep implements Runnable {
             if(url.contains("setec")) {
                 all = doc.getElementsByClass("product");
                 for (Element el : all) {
+                    String tmp = el.getElementsByClass("name").first().getElementsByTag("a").text();
+                    if(tmp.equals("Lenovo ST50"))
+                        continue;
                     Element e = el.getElementsByTag("a").first();
                     links.add(e);
                     e = el.getElementsByTag("img").first();
