@@ -156,6 +156,9 @@ public class ProductServiceImpl implements ProductService {
                     fl1 = 1;
                     graphicsCard = property.trim();
                 }
+                if(graphicsCard.contains("NVDIA")){
+                    graphicsCard = graphicsCard.replace("NVDIA", "nVidia");
+                }
             }
             if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)")) {
                 if (fl2 == 1) {
