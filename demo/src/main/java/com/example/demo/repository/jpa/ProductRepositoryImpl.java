@@ -20,13 +20,13 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-//        try {
-            return this.repository.save(product);
-//        } catch (DataIntegrityViolationException e) {
-//            System.out.println("Duplicate found, skipping");
-//        }
+        try {
+            return this.repository.saveAndFlush(product);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Duplicate found, skipping");
+        }
 //
-//        return product;
+        return product;
 
 //        return this.repository.save(product);
     }

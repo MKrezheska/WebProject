@@ -8,8 +8,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "PRODUCTS")
-//@Table(name = "PRODUCTS",uniqueConstraints={@UniqueConstraint(columnNames={"url"})})
+//@Table(name = "PRODUCTS")
+@Table(name = "PRODUCTS",uniqueConstraints={@UniqueConstraint(columnNames={"url"})})
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

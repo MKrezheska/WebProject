@@ -97,11 +97,6 @@ public class ProductServiceImpl implements ProductService {
         for (WorkerDesc w : workers2) {
             ArrayList<String> prodd = w.waitForResults();
             if (prodd != null) {
-//                System.out.println(w.getName() + ": ");
-//                System.out.println(prodd);
-//                for (String s : prodd) {
-//                    System.out.println(s);
-//                }
                 productDesc.addAll(prodd);
             } else
                 System.err.println(w.getName() + " had some error!");
@@ -192,10 +187,12 @@ public class ProductServiceImpl implements ProductService {
                         }
                     } else
                         memory = property.trim();
-                    if(memory.contains("+")) {
-                        memory = "TwoHDD: " + memory;
-                    }
-
+                }
+                if(memory.contains("+")) {
+                    memory = "TwoHDD: " + memory;
+                }
+                if(memory.contains("Т")){
+                    memory = memory.replace("Т", "T");
                 }
             }
             if (property.matches("( *)(4|8|12|16)GB( *)|(.*)DDR4(.*)|(.*)LPDDR3(.*)|( *)4GB DDR3( *)|(.*) RAM(.*)")) {

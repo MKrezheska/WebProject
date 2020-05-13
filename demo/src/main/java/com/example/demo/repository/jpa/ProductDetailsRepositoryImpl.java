@@ -3,6 +3,7 @@ package com.example.demo.repository.jpa;
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductDetails;
 import com.example.demo.repository.ProductDetailsRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +21,13 @@ public class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
     @Override
     public ProductDetails save(String display, String graphicsCard, String internalMemory, String memory, String processor, String resolution, Product product) {
         ProductDetails details = new ProductDetails(display, graphicsCard, internalMemory, memory, processor, resolution, product);
-        return this.repository.save(details);
+//        return this.repository.save(details);
+        try {
+            return this.repository.saveAndFlush(details);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Duplicate found, skipping");
+        }
+        return  details;
     }
 
     @Override
