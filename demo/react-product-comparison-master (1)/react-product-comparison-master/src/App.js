@@ -2,17 +2,20 @@ import React, {Component} from 'react';
 import './App.css';
 import Products from './components/Products';
 import Comparison from './components/Comparison';
+import {searchProducts} from "./api/api";
+import Header from "./components/Header";
 
 
 class App extends Component {
 
 
 
+
     render() {
         return (
             <div className="container">
-                <h1>Compare products</h1>
 
+                <h1>Compare products</h1>
                 <Products/>
                 <Comparison/>
             </div>

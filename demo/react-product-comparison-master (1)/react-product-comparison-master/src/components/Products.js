@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component, memo} from 'react';
 import Loader from './common/Loader';
-import { loadProducts } from '../api/api';
+import {loadProducts, searchProducts} from '../api/api';
 import Product from './Product';
 import ReactPaginate from 'react-paginate';
+import Header from "./Header";
 
 
 class Products extends Component {
@@ -23,10 +24,26 @@ class Products extends Component {
             this.setState({
                 products: data,
                 loading: false,
+                currentPage: 0,
+                pageCount: Math.ceil(data.length / this.state.perPage)
+            }, () => this.setElementsForCurrentPage());
+        })
+
+    }
+
+    searchData = (display, graphicsCard, internalMemory, memory, processor, resolution) => {
+
+        searchProducts(display, graphicsCard, internalMemory, memory, processor, resolution).then(data=>{
+            console.log('response', data)
+            this.setState({
+                products: data,
+                loading: false,
+                currentPage: 0,
                 pageCount: Math.ceil(data.length / this.state.perPage)
             }, () => this.setElementsForCurrentPage());
         })
     }
+
 
     setElementsForCurrentPage() {
         let elements = this.state.products
@@ -67,7 +84,9 @@ class Products extends Component {
         return (
             loading ?
                 <Loader /> :
+
                 <div className="row">
+                    <Header onSearch={this.searchData}/>
                     {this.state.elements}
                     {paginationElement}
                 </div>

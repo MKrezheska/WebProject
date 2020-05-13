@@ -38,8 +38,7 @@ public class HomeController {
         List<ProductDetails> details = productService.searchProducts(display, graphicsCard, internalMemory, memory, processor, resolution);
         return details.stream().map(ProductDetails::getProduct).collect(Collectors.toList());
 
-
-        // /products?display=15.6&graphicsCard=AMD&internalMemory=8&memory=256&processor=AMD&resolution=1920
+        // /products/filter?display=15.6&graphicsCard=AMD&internalMemory=8&memory=256&processor=AMD&resolution=1920
     }
 }
 
