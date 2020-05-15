@@ -14,7 +14,7 @@ class Products extends Component {
             products : [],
             loading : true,
             elements: [],
-            perPage: 4,
+            perPage: 3,
             currentPage: 0
         };
     }
@@ -39,6 +39,7 @@ class Products extends Component {
                 products: data,
                 loading: false,
                 currentPage: 0,
+                offset : 0,
                 pageCount: Math.ceil(data.length / this.state.perPage)
             }, () => this.setElementsForCurrentPage());
         })
@@ -67,8 +68,8 @@ class Products extends Component {
         if (this.state.pageCount > 1) {
             paginationElement = (
                 <ReactPaginate
-                    previousLabel={'Previous'}
-                    nextLabel={'Next'}
+                    previousLabel={'<-'}
+                    nextLabel={'->'}
                     breakLabel={'...'}
                     breakClassName={'break-me'}
                     pageCount={this.state.pageCount}
@@ -78,6 +79,8 @@ class Products extends Component {
                     containerClassName={'pagination'}
                     subContainerClassName={'pages pagination'}
                     activeClassName={'active'}
+                    itemClass={"page-item"}
+                    linkClass={"page-link"}
                 />
             );
         }
