@@ -68,8 +68,8 @@ class Products extends Component {
         if (this.state.pageCount > 1) {
             paginationElement = (
                 <ReactPaginate
-                    previousLabel={'<-'}
-                    nextLabel={'->'}
+                    previousLabel={'<'}
+                    nextLabel={'>'}
                     breakLabel={'...'}
                     breakClassName={'break-me'}
                     pageCount={this.state.pageCount}

@@ -4218,6 +4218,7 @@ input[type="button"].btn-block {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  cursor: pointer;
 }
 
 .custom-select:focus {
@@ -11058,7 +11059,13 @@ legend {
 .list-group-item h6 {
   color: inherit;
 }
-
+.list-group-item h5 {
+    color: inherit;
+    overflow: hidden;
+    /*white-space: nowrap;*/
+    word-break: break-all;
+    width: 207px;
+    height: 37px;}
 body {
   background-color: #eee;
 
@@ -11114,7 +11121,8 @@ h5 small {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #48cfad;
+  /*background: #48cfad;*/
+  background: #44a28a;
   opacity: 0;
   transition: .5s ease;
 }
@@ -11181,14 +11189,19 @@ h5 small {
   margin-left: auto;
   margin-right: auto;
   border-radius: 4px;
+  width: 100%;
+  text-align: center;
 }
 .pagination > li {
   display: inline;
+
 }
 .pagination > li.active::after {
   -webkit-transition: all 0.45s ease-in-out;
   transition: all 0.45s ease-in-out;
-  border-color: transparent #28bea8;
+  /*border-color: transparent #28bea8;*/
+  /*border-color: transparent #6CC3D5;*/
+  border-color: transparent gray;
   -webkit-transform: rotate(360deg);
   transform: rotate(360deg);
 }
@@ -11196,7 +11209,7 @@ h5 small {
 .pagination > li > span {
   position: relative;
   font-size: 13px;
-  color: black;
+  color: dimgrey;
   width: 35px;
   margin: 1px;
   height: 35px;
@@ -11209,6 +11222,9 @@ h5 small {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+
+
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
   margin-left: 0;
@@ -11225,7 +11241,8 @@ h5 small {
 .pagination > li > a:focus,
 .pagination > li > span:focus {
   z-index: 2;
-  color: #23527c;
+  /*color: #6CC3D5;*/
+  color: #44a28a;
   background-color: #eee;
   border-color: #ddd;
 }
@@ -11236,12 +11253,23 @@ h5 small {
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
   z-index: 3;
-  color: #fff;
+  /*color: #28bea8;*/
+  color: #44a28a;
   cursor: default;
-  background-color: #16879e;
-  border-color: #337ab7;
+  /*border-color: #6CC3D5;*/
+  border-color: #44a28a;
   border-radius: 50%;
 }
+
+.pagination > .active > a:after{
+    border-color: transparent #44a28a;
+    /*border-color: transparent #6CC3D5;*/
+    /*border-color: transparent gray;*/
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+
 .pagination > .disabled > span,
 .pagination > .disabled > span:hover,
 .pagination > .disabled > span:focus,
@@ -11291,7 +11319,8 @@ h5 small {
   bottom: 0;
   left: 0;
   right: 0;
-  border: 2px solid #e6e6e6;
+  /*border: 2px solid #6CC3D5;      !*28bea8*!*/
+  border: 2px solid gray;      /*28bea8*/
   content: '';
   z-index: -1;
   border-radius: 50%;
@@ -11310,13 +11339,14 @@ h5 small {
 .pagination>li>a:hover,
 .pagination>li>a:active,
 .pagination>li>a.hover {
-  color: #236c57;
+  color: #44a28a;
 }
 
 .pagination>li>a:hover:after,
 .pagination>li>a:active:after,
 .pagination>li>a.hover:after {
-  border-color: transparent #28bea8;
+  border-color: transparent #44a28a;
+  /*border-color: transparent gray;*/
   -webkit-transform: rotate(360deg);
   transform: rotate(360deg);
 }
@@ -11333,4 +11363,30 @@ a:hover{
 .image-container{
   display: flex;
   justify-content: center;
+}
+html {
+    overflow-y: scroll;
+}
+
+.card-img-top{
+    height: 110px;
+}
+.break-me,
+.disabled{
+    pointer-events: none;
+}
+h1{
+    text-align: center;
+}
+
+.colorclass{
+    background-color: dimgrey;
+    border-color: dimgrey;
+}
+button.colorclass:hover{
+    background-color: #44a28a;
+    border-color: #44a28a;
+}
+.list-group-item + .list-group-item{
+    cursor: default;
 }

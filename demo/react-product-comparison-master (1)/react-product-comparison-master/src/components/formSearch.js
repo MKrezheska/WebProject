@@ -117,7 +117,7 @@ const FormSearch = (props) => {
             {/*<input className="form-control mr-sm-2" name={"memory"} type="text" placeholder="Search" aria-label="Search"/>*/}
             {/*<input className="form-control mr-sm-2" name={"processor"} type="text" placeholder="Search" aria-label="Search"/>*/}
             {/*<input className="form-control mr-sm-2" name={"resolution"} type="text" placeholder="Search" aria-label="Search"/>*/}
-            <button className="btn btn-info my-2 my-sm-0 form-group" type="submit">Search</button>
+            <button className="btn btn-info my-2 my-sm-0 form-group colorclass" type="submit">Search</button>
         </form>
     )
 }

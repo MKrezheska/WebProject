@@ -106,7 +106,7 @@ public class WorkerNep implements Runnable {
                         clubPrice.add("Клуб цена: "+e.text());
                     }
                     else
-                        clubPrice.add("Клуб цена: 0 ден.");
+                        clubPrice.add("Клуб цена: Нема.");
                     e = el.getElementsByClass("klub-rata-suma").first();
                     pricePartial.add("24x Клуб рата: "+e.text());
 
@@ -134,7 +134,7 @@ public class WorkerNep implements Runnable {
                         clubPrice.add("haPPy цена: "+e.text()+" ден.");
                     }
                     else {
-                        clubPrice.add("haPPy цена: 0 ден.");
+                        clubPrice.add("haPPy цена: Нема.");
                         p="Редовна";
                     }
                     e=el.select("span[class*=product-price__amount--value ng-binding ng-scope]").first();
