@@ -19,7 +19,7 @@ const FormSearch = (props) => {
 
             <div className="form-group">
                 <select className="browser-default custom-select " name={"display"}>
-                    <option value="">Display</option>
+                    <option value="">Дисплеј</option>
                     <option value="11.6">11.6</option>
                     <option value="13.3">13.3</option>
                     <option value="13.9">13.9</option>
@@ -33,7 +33,7 @@ const FormSearch = (props) => {
             </div>
             <div className="form-group">
                 <select className="browser-default custom-select " name={"internalMemory"}>
-                    <option value="">Internal Memory</option>
+                    <option value="">Внатрешна меморија</option>
                     <option value="2">2GB</option>
                     <option value="4">4GB</option>
                     <option value="6">6GB</option>
@@ -44,7 +44,7 @@ const FormSearch = (props) => {
             </div>
             <div className="form-group">
                 <select className="browser-default custom-select " name={"memory"}>
-                    <option value="">Memory</option>
+                    <option value="">Меморија</option>
                     <option value="128">128GB SSD</option>
                     <option value="256">256GB SSD</option>
                     <option value="500">500GB HDD</option>
@@ -56,7 +56,7 @@ const FormSearch = (props) => {
             </div>
             <div className="form-group">
                 <select className="browser-default custom-select " name={"resolution"}>
-                    <option value="">Resolution</option>
+                    <option value="">Резолуција</option>
                     <option value="1140">1140x900</option>
                     <option value="1360">1360x768</option>
                     <option value="1366">1366x768</option>
@@ -68,7 +68,7 @@ const FormSearch = (props) => {
             </div>
             <div className="form-group">
                 <select className="browser-default custom-select " name={"processor"}>
-                    <option value="">Processor</option>
+                    <option value="">Процесор</option>
                     <option value="pentium">Intel Pentium</option>
                     <option value="celeron">Intel Celeron</option>
                     <option value="atom">Intel Atom</option>
@@ -80,7 +80,7 @@ const FormSearch = (props) => {
             </div>
             <div className="form-group">
                 <select className="browser-default custom-select " name={"graphicsCard"}>
-                    <option value="">Graphics Card</option>
+                    <option value="">Графичка картичка</option>
                     <option value="Integrated">Integrated</option>
                     <option value="Dedicated">Dedicated</option>
                 </select>
@@ -117,8 +117,11 @@ const FormSearch = (props) => {
             {/*<input className="form-control mr-sm-2" name={"memory"} type="text" placeholder="Search" aria-label="Search"/>*/}
             {/*<input className="form-control mr-sm-2" name={"processor"} type="text" placeholder="Search" aria-label="Search"/>*/}
             {/*<input className="form-control mr-sm-2" name={"resolution"} type="text" placeholder="Search" aria-label="Search"/>*/}
-            <button className="btn btn-info my-2 my-sm-0 form-group colorclass" type="submit">Search</button>
+            <a href="#tableID" className="btn btn-info my-2 my-sm-0 form-group colorclass">Види споредба</a>
+            <p> </p>
+            <button className="btn btn-info my-2 my-sm-0 form-group colorclass" type="submit">Пребарај</button>
         </form>
+
     )
 }
 

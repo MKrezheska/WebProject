@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import Products from './components/Products';
 import Comparison from './components/Comparison';
-import {searchProducts} from "./api/api";
-import Header from "./components/Header";
+
 
 
 class App extends Component {

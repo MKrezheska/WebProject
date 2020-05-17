@@ -18,7 +18,7 @@ const logoPicker = (product) => {
 };
 
 const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedProducts}) =>
-    <div className="col-md-6 col-lg-3 col-sm-6">
+    <div className="col-md-7 col-lg-3 col-sm-6">
         <div className="product">
             <div className="card" >
                 <div className="image-container">
@@ -27,8 +27,8 @@ const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedPr
                 <div className="overlay"></div>
                 <div className="middle">
                     {isBeingCompared(product, comparedProducts) ?
-                        <button className="btn btn-lg" onClick={() => onRemoveFromComparison(product)}>Remove</button> :
-                        <button className="btn btn-lg" onClick={() => onAddToComparison(product)}>Compare</button>
+                        <button className="btn btn-lg" onClick={() => onRemoveFromComparison(product)}>Отстрани</button> :
+                        <button className="btn btn-lg" onClick={() => onAddToComparison(product)}>Спореди</button>
                     }
                 </div>
             </div>

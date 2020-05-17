@@ -5,27 +5,27 @@ import { connect } from 'react-redux';
 const Comparison = ({products}) =>
     products.length >= 2 ?
         <div className="row">
-            <table className="table">
+            <table id="tableID" className="table">
                 <thead>
-                    <tr>
-                        <th className="table-light">&nbsp;</th>
-                        { products.map(product => <th key={`th-${product.id}`} className="text-center table-light">{product.name}</th>) }
-                    </tr>
+                <tr>
+                    <th className="table-light">&nbsp;</th>
+                    { products.map(product => <th key={`th-${product.id}`} className="text-center table-light">{product.name}</th>) }
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th className="table-light">Price</th>
-                        { products.map(product => <td key={`url-td-${product.id}`} className="text-center table-light">{product.price}</td>) }
-                    </tr>
-                    <tr>
-                        <th className="table-light">Description</th>
-                        { products.map(product => <td id="tab-description" key={`description-td-${product.id}`} className="text-center table-light">{addLineBreaks(product)}</td>) }
-                    </tr>
+                <tr>
+                    <th className="table-light">Цена</th>
+                    { products.map(product => <td key={`url-td-${product.id}`} className="text-center table-light">{product.price}</td>) }
+                </tr>
+                <tr>
+                    <th className="table-light">Опис</th>
+                    { products.map(product => <td id="tab-description" key={`description-td-${product.id}`} className="text-center table-light">{addLineBreaks(product)}</td>) }
+                </tr>
 
                 </tbody>
             </table>
         </div> :
-        null
+        <div id="tableID" className="text-info text-center">Изберете продукти за споредба!</div>
 ;
 
 Comparison.propTypes = {
@@ -45,12 +45,12 @@ const addLineBreaks = (product) => {
             </React.Fragment>
         ));
     else
-     return product.description.split('|').map((text, index) => (
-        <React.Fragment key={`${text}-${index}`}>
-            {text}
-            <br/>
-        </React.Fragment>
-    ));
+        return product.description.split('|').map((text, index) => (
+            <React.Fragment key={`${text}-${index}`}>
+                {text}
+                <br/>
+            </React.Fragment>
+        ));
 };
 
 
