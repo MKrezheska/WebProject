@@ -48,17 +48,19 @@ public class ProductServiceImpl implements ProductService {
         workers = new ArrayList<>(urls.length);
         for (String url : urls) {
             w1 = new WorkerNep(url + "1");
+            w2 = new WorkerNep(url + "2");
 
             if (url.contains("setec")) {
-                w2 = new WorkerNep(url + "2");
+//                w2 = new WorkerNep(url + "2");
                 w3 = new WorkerNep(url + "3");
-                workers.add(w2);
+//                workers.add(w2);
                 workers.add(w3);
-                new Thread(w2).start();
+//                new Thread(w2).start();
                 new Thread(w3).start();
             }
             workers.add(w1);
-
+            workers.add(w2);
+            new Thread(w2).start();
             new Thread(w1).start();
 
         }

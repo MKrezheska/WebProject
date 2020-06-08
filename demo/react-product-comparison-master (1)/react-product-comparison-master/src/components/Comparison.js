@@ -25,7 +25,9 @@ const Comparison = ({products}) =>
                 </tbody>
             </table>
         </div> :
-        <div id="tableID" className="text-info text-center">Изберете продукти за споредба!</div>
+        <div id="tableID" className="text-info text-center"></div>
+        {/*<div id="tableID" className="text-info text-center">Изберете продукти за споредба!</div>*/}
+
 ;
 
 Comparison.propTypes = {

@@ -81,6 +81,7 @@ class Products extends Component {
                     activeClassName={'active'}
                     itemClass={"page-item"}
                     linkClass={"page-link"}
+                    forcePage={this.state.currentPage}
                 />
             );
         }

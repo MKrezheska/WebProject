@@ -11379,14 +11379,23 @@ h1{
   text-align: center;
 }
 
+.btn{
+  background-color: #44a28a;
+  border-color: #44a28a;
+}
+
 .colorclass{
   background-color: dimgrey;
   border-color: dimgrey;
 }
-button.colorclass:hover{
+button.colorclass:hover,
+a.colorclass:hover,
+button.colorclass:active,
+a.colorclass:active{
   background-color: #44a28a;
   border-color: #44a28a;
 }
+
 .list-group-item + .list-group-item{
   cursor: default;
 }
