@@ -1,4 +1,4 @@
-import React, {Component, memo} from 'react';
+import React, {Component} from 'react';
 import Loader from './common/Loader';
 import {loadProducts, searchProducts} from '../api/api';
 import Product from './Product';
@@ -11,8 +11,8 @@ class Products extends Component {
         super(props);
         this.state = {
             offset: 0,
-            products : [],
-            loading : true,
+            products: [],
+            loading: true,
             elements: [],
             perPage: 3,
             currentPage: 0
@@ -33,13 +33,13 @@ class Products extends Component {
 
     searchData = (display, graphicsCard, internalMemory, memory, processor, resolution) => {
 
-        searchProducts(display, graphicsCard, internalMemory, memory, processor, resolution).then(data=>{
+        searchProducts(display, graphicsCard, internalMemory, memory, processor, resolution).then(data => {
             console.log('response', data)
             this.setState({
                 products: data,
                 loading: false,
                 currentPage: 0,
-                offset : 0,
+                offset: 0,
                 pageCount: Math.ceil(data.length / this.state.perPage)
             }, () => this.setElementsForCurrentPage());
         })
@@ -49,21 +49,21 @@ class Products extends Component {
     setElementsForCurrentPage() {
         let elements = this.state.products
             .slice(this.state.offset, this.state.offset + this.state.perPage)
-            .map((product) => <Product product={product} key={product.id} />);
+            .map((product) => <Product product={product} key={product.id}/>);
 
-        this.setState({ elements: elements });
+        this.setState({elements: elements});
     }
 
     handlePageClick = (data) => {
         const selectedPage = data.selected;
         const offset = selectedPage * this.state.perPage;
-        this.setState({ currentPage: selectedPage, offset: offset }, () => {
+        this.setState({currentPage: selectedPage, offset: offset}, () => {
             this.setElementsForCurrentPage();
         });
     };
 
     render() {
-        const { products, loading } = this.state;
+        const {products, loading} = this.state;
         let paginationElement;
         if (this.state.pageCount > 1) {
             paginationElement = (
@@ -85,16 +85,26 @@ class Products extends Component {
                 />
             );
         }
-        return (
-            loading ?
-                <Loader /> :
+        if (this.state.elements.length > 0)
+            return (
+                loading ?
+                    <Loader/> :
 
+                    <div className="row">
+                        <Header onSearch={this.searchData}/>
+                        {this.state.elements}
+                        {paginationElement}
+                    </div>
+            );
+        else
+            return (
                 <div className="row">
                     <Header onSearch={this.searchData}/>
-                    {this.state.elements}
-                    {paginationElement}
-                </div>
-        );
+                    <p className="text-info text-center">
+                        <i className="fa fa-minus-circle"></i><br/>
+                        Нема продукти со избраните спецификации!</p></div>
+
+            );
     }
 }
 

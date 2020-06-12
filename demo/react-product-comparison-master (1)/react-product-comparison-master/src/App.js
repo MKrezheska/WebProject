@@ -14,7 +14,7 @@ class App extends Component {
         return (
             <div className="container">
 
-                <h1>Compare products</h1>
+                <h1>Спореди продукти</h1>
                 <Products/>
                 <Comparison/>
             </div>

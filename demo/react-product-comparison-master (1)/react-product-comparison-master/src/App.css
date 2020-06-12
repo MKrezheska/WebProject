@@ -11174,7 +11174,7 @@ h5 small {
 }
 
 .table {
-  margin-top: 5%;
+  margin-top: 1%;
 }
 
 .row {
@@ -11426,3 +11426,26 @@ html {
 
 
 }
+#root > div > div.row > header > nav > form > a:hover {
+  background-color: #44a28a;
+  border-color: #44a28a;
+}
+
+
+#root > div > div:nth-child(2) > p {
+  align-items: center;
+  margin: auto;
+  font-family: "Montserrat", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  width: 60%;
+}
+
+#tableID {
+  display: none;
+  margin-right: 2%;
+  margin-left: 3%;
+}
+
+#root > div > div.row > header > nav > div > button {
+  margin-left: 20px;
+}
+
