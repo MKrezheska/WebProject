@@ -106,15 +106,15 @@ public class ProductServiceImpl implements ProductService {
 
 
         for (int i = 0; i < productRepo.size(); i++) {
+            ArrayList<String> properties = getProperties(productDesc.get(i));
             Product product = createProduct(nameRepo.get(i),
                     productRepo.get(i),
                     imgRepo.get(i),
-                    productDesc.get(i),
+                    properties.toString().substring(1,properties.toString().length()-1),
                     priceRepo.get(i),
                     clubPriceRepo.get(i),
                     pricePartialRepo.get(i));
             // ovde da ja povikuvame funkcijata so ke vrakjat lista od properties za dadeno description vo properties lista
-            ArrayList<String> properties = getProperties(productDesc.get(i));
             productDetailsRepository.save(properties.get(0), properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), product);
 
 
