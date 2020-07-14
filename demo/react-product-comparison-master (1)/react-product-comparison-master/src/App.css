@@ -11443,6 +11443,7 @@ html {
   display: none;
   margin-right: 2%;
   margin-left: 3%;
+  width: 96%;
 }
 
 #root > div > div.row > header > nav > div > button {

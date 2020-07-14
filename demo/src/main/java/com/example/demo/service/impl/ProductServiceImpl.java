@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -120,6 +121,17 @@ public class ProductServiceImpl implements ProductService {
 
         }
 
+        List<Product> productList = listProducts();
+        for(Product product:productList){
+            ProductDetails productDetails = this.productDetailsRepository.findByProductId(product.getId());
+            Product similar = null;
+            if(product.getUrl().contains("neptun")){
+                similar = findMostSimilarProduct(productDetails, this.productDetailsRepository.findByProductUrlContains("setec"));
+            } else {
+                similar = findMostSimilarProduct(productDetails, this.productDetailsRepository.findByProductUrlContains("setec"));
+            }
+            updateSimilarProduct(product.getId(), similar);
+        }
 
     }
 
@@ -296,6 +308,200 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    public boolean haveSameDisplay(ProductDetails product_1, ProductDetails product_2) {
+        if(!product_1.getId().equals(product_2.getId())) {
+            String forComparing_1 = product_1.getDisplay().replaceAll("[^0-9.]", "");
+            String forComparing_2 = product_2.getDisplay().replaceAll("[^0-9.]", "");
+            return forComparing_1.equals(forComparing_2)
+                    || (forComparing_1 + ".0").equals(forComparing_2)
+                    || (forComparing_2 + ".0").equals(forComparing_1);
+        } return false;
+
+    }
+
+    public boolean haveSameResolution(ProductDetails product_1, ProductDetails product_2) {
+        if(!product_1.getId().equals(product_2.getId())) {
+
+            String forComparing_1 = product_1.getResolution().replaceAll("\\s+", "").replace("X", "x");
+            String forComparing_2 = product_2.getResolution().replaceAll("\\s+", "").replace("X", "x");
+            return forComparing_1.equals(forComparing_2);
+        } return false;
+
+    }
+
+    public boolean haveSameInternalMemory(ProductDetails product_1, ProductDetails product_2) {
+        if(!product_1.getId().equals(product_2.getId())) {
+
+            String forComparing_1 = product_1.getInternalMemory().split("[Gg]")[0].replaceAll("[^0-9]", "");
+            String forComparing_2 = product_2.getInternalMemory().split("[Gg]")[0].replaceAll("[^0-9]", "");
+            return forComparing_1.equals(forComparing_2);
+        } return false;
+
+    }
+
+    public boolean haveSameGraphicsCard(ProductDetails product_1, ProductDetails product_2) {
+        if(!product_1.getId().equals(product_2.getId())) {
+
+            if (product_1.getGraphicsCard().contains("Integrated: ") && product_2.getGraphicsCard().contains("Integrated: ")) {
+            if (product_1.getGraphicsCard().toLowerCase().contains("intel")
+                    && product_2.getGraphicsCard().toLowerCase().contains("intel"))
+                return true;
+            else if (product_1.getGraphicsCard().toLowerCase().contains("vega")
+                    && product_2.getGraphicsCard().toLowerCase().contains("vega"))
+                return true;
+            else if (product_1.getGraphicsCard().toLowerCase().contains("uma")
+                    && product_2.getGraphicsCard().toLowerCase().contains("uma"))
+                return true;
+            else return product_1.getGraphicsCard().toLowerCase().matches("(.*)(itegrated|integrated)(.*)vga(.*)")
+                        && product_2.getGraphicsCard().toLowerCase().matches("(.*)(itegrated|integrated)(.*)vga(.*)");
+        } else if (product_1.getGraphicsCard().contains("Dedicated: ") && product_2.getGraphicsCard().contains("Dedicated: ")) {
+            if (product_1.getGraphicsCard().toLowerCase().contains("radeon")
+                    && product_2.getGraphicsCard().toLowerCase().contains("radeon"))
+                return true;
+            else return product_1.getGraphicsCard().toLowerCase().matches("(.*)(nvidia|geforce)(.*)")
+                    && product_2.getGraphicsCard().toLowerCase().matches("(.*)(nvidia|geforce)(.*)");
+        }
+        return false;}
+        return false;
+    }
+
+    public boolean haveSameProcessor(ProductDetails product_1, ProductDetails product_2) {
+        if(!product_1.getId().equals(product_2.getId())) {
+
+            if (product_1.getProcessor().toLowerCase().contains("i3") &&
+                    product_2.getProcessor().toLowerCase().contains("i3"))
+                return true;
+            else if (product_1.getProcessor().toLowerCase().contains("i5") &&
+                    product_2.getProcessor().toLowerCase().contains("i5"))
+                return true;
+            else if (product_1.getProcessor().toLowerCase().contains("i7") &&
+                    product_2.getProcessor().toLowerCase().contains("i7"))
+                return true;
+            else if (product_1.getProcessor().toLowerCase().contains("amd") &&
+                    product_2.getProcessor().toLowerCase().contains("amd"))
+                return true;
+            else if (product_1.getProcessor().toLowerCase().contains("celeron") &&
+                    product_2.getProcessor().toLowerCase().contains("celeron"))
+                return true;
+            else if (product_1.getProcessor().toLowerCase().contains("pentium") &&
+                    product_2.getProcessor().toLowerCase().contains("pentium"))
+                return true;
+            else return product_1.getProcessor().toLowerCase().contains("atom") &&
+                        product_2.getProcessor().toLowerCase().contains("atom");
+        }
+        return false;
+    }
+
+    public boolean haveSameMemory(ProductDetails product_1, ProductDetails product_2) {
+        if(!product_1.getId().equals(product_2.getId())) {
+
+            if (product_1.getMemory().contains("TwoHDD") && product_2.getMemory().contains("TwoHDD")) {
+            if (product_1.getMemory().contains("1TB") && product_2.getMemory().contains("1TB")) {
+                Pattern p = Pattern.compile("(\\d\\d\\dG)|(\\d\\dG)|(\\dG)");
+                Matcher m_1 = p.matcher(product_1.getMemory());
+                Matcher m_2 = p.matcher(product_2.getMemory());
+                if (m_1.find() && m_2.find()) {
+                    return m_1.group().equals(m_2.group());
+                }
+            }
+        } else if (!product_1.getMemory().contains("TwoHDD")
+                && !product_2.getMemory().contains("TwoHDD")) {
+            if (product_1.getMemory().matches("(.*)1TB(.*)(HDD|(.*)rpm(.*))")
+                    && product_2.getMemory().matches("(.*)1TB(.*)(HDD|(.*)rpm(.*))")) {
+                return true;
+            } else if (product_1.getMemory().matches("(.*)2TB(.*)(HDD|(.*)rpm(.*))")
+                    && product_2.getMemory().matches("(.*)2TB(.*)(HDD|(.*)rpm(.*))")) {
+                return true;
+            } else if (product_1.getMemory().matches("(.*)1TB(.*)SSD(.*)")
+                    && !product_1.getMemory().contains("HDD")
+                    && !product_2.getMemory().contains("HHD")
+                    && product_2.getMemory().matches("(.*)1TB(.*)SSD(.*)")) {
+                return true;
+            } else {
+                Pattern p = Pattern.compile("\\d\\d\\d");
+                Matcher m_1 = p.matcher(product_1.getMemory());
+                Matcher m_2 = p.matcher(product_2.getMemory());
+                if (m_1.find() && m_2.find()) {
+                    if (m_1.group().equals(m_2.group())) {
+                        return true;
+                    }
+                } else {
+                    p = Pattern.compile("\\d\\d");
+                    m_1 = p.matcher(product_1.getMemory());
+                    m_2 = p.matcher(product_2.getMemory());
+                    if (m_1.find() && m_2.find()) {
+                        if (m_1.group().equals(m_2.group())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;}return false;
+    }
+
+    public Product getMostSimilarPrice(Product product_1, List<Product> products){
+
+        int mainPrice = Integer.parseInt(product_1.getPrice().replaceAll("[^0-9]", ""));
+        int mostSimilarPrice = Integer.parseInt(products.get(0).getPrice().replaceAll("[^0-9]", ""));
+        Product mostSimilarProductByPrice = products.get(0);
+        for(Product product : products){
+            if(!product.getId().equals(product_1.getId())) {
+                int difference = Math.abs(Integer.parseInt(product.getPrice().replaceAll("[^0-9]", "")) - mainPrice);
+                if (difference < mostSimilarPrice) {
+                    mostSimilarPrice = difference;
+                    mostSimilarProductByPrice = product;
+                }
+            }
+        }
+        return mostSimilarProductByPrice;
+    }
+
+    public int findMaxSimilarities(ProductDetails product_1, List<ProductDetails> products){
+        int similarities = 0;
+        int maxSimilarities = 0;
+        for(ProductDetails product : products){
+            if(!product_1.getId().equals(product.getId())) {
+
+                if(haveSameDisplay(product_1, product)) similarities++;
+            if(haveSameGraphicsCard(product_1, product)) similarities++;
+            if(haveSameInternalMemory(product_1, product)) similarities++;
+            if(haveSameMemory(product_1, product)) similarities++;
+            if(haveSameProcessor(product_1, product)) similarities++;
+            if(haveSameResolution(product_1, product)) similarities++;
+            System.out.println(similarities);
+            if(similarities > maxSimilarities){
+                maxSimilarities = similarities;
+            }}
+            similarities = 0;
+        }
+        return maxSimilarities;
+    }
+
+    public Product findMostSimilarProduct(ProductDetails product_1, List<ProductDetails> products){
+        int maxSimilarities = findMaxSimilarities(product_1, products);
+        System.out.println(maxSimilarities);
+        int similarities = 0;
+        List<ProductDetails> productsWithSameNumberSimilarities = new ArrayList<>();
+        for(ProductDetails product : products){
+            if(!product_1.getId().equals(product.getId())) {
+
+                if(haveSameDisplay(product_1, product)) similarities++;
+            if(haveSameGraphicsCard(product_1, product)) similarities++;
+            if(haveSameInternalMemory(product_1, product)) similarities++;
+            if(haveSameMemory(product_1, product)) similarities++;
+            if(haveSameProcessor(product_1, product)) similarities++;
+            if(haveSameResolution(product_1, product)) similarities++;
+            if(similarities == maxSimilarities){
+                productsWithSameNumberSimilarities.add(product);
+            }}
+            similarities = 0;
+        }
+        List<Product> productList = products.stream().map(ProductDetails::getProduct).collect(Collectors.toList());
+        return getMostSimilarPrice(product_1.getProduct(), productList);
+    }
+
     @Override
     public List<Product> listProducts() {
         return this.productRepository.getAllProducts();
@@ -334,6 +540,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDetails> searchProducts(String display, String graphicsCard, String internalMemory, String memory, String processor, String resolution) {
         return this.productDetailsRepository.searchProducts(display, graphicsCard, internalMemory, memory, processor, resolution);
+    }
+
+    @Override
+    public List<Product> findByUrlContains(String store) {
+        return productRepository.findByUrlContains(store);
+    }
+
+    @Override
+    public Product updateSimilarProduct(Long id, Product similar) {
+        Product product = this.productRepository.findById(id).orElseThrow(InvalidProductIdException::new);
+        product.setSimilarId(similar.getId());
+        product.setSimilarName(similar.getName());
+        product.setSimilarUrl(similar.getUrl());
+        product.setSimilarDescription(similar.getDescription());
+        product.setSimilarPrice(similar.getPrice());
+        return this.productRepository.save(product);
     }
 
 

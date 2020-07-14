@@ -50,4 +50,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     public void deleteById(Long productId) {
         this.repository.deleteById(productId);
     }
+
+    @Override
+    public List<Product> findByUrlContains(String store) {
+        return this.repository.findByUrlContains(store);
+    }
 }

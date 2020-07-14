@@ -6,6 +6,7 @@ import com.example.demo.repository.ProductDetailsRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,21 @@ public class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
     @Override
     public void deleteById(Long productId) {
         this.repository.deleteById(productId);
+    }
+
+    @Override
+    public ProductDetails findByProductId(Long id) {
+        return this.repository.findByProductId(id);
+    }
+
+    @Override
+    public List<ProductDetails> findByProductUrlContains(String store) {
+        List<ProductDetails> list = new ArrayList<>();
+        for (ProductDetails productDetails:this.repository.findAll()){
+            if(productDetails.getProduct().getUrl().contains(store))
+                list.add(productDetails);
+        }
+        return list;
     }
 
     @Override

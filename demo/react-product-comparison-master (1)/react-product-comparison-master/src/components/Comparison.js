@@ -9,13 +9,13 @@ const Comparison = ({products}) =>
                 <thead>
                 <tr>
                     <th className="table-light">&nbsp;</th>
-                    { products.map(product => <th key={`th-${product.id}`} className="text-center table-light">{product.name}</th>) }
+                    { products.map(product => <th key={`th-${product.id}`} className="text-center table-light">{getName(product)}</th>) }
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <th className="table-light">Цена</th>
-                    { products.map(product => <td key={`url-td-${product.id}`} className="text-center table-light">{product.price}</td>) }
+                    { products.map(product => <td key={`url-td-${product.id}`} className="text-center table-light">{getPrice(product)}</td>) }
                 </tr>
                 <tr>
                     <th className="table-light">Дисплеј</th>
@@ -57,8 +57,11 @@ Comparison.propTypes = {
 const mapStateToProps = state => ({
     products : state.products
 });
-const getDisplay = (product) => {
-    return product.description.split(',').map((text, index) => (
+
+const getName = (product) => {
+    if(product.name !== undefined)
+        return product.name;
+    else return product.split('|').map((text, index) => (
         index === 0 ?
             <React.Fragment key={`${text}-${index}`}>
                 {text}
@@ -69,39 +72,10 @@ const getDisplay = (product) => {
 
 };
 
-const getProcessor = (product) => {
-    return product.description.split(',').map((text, index) => (
-        index === 4 ?
-            <React.Fragment key={`${text}-${index}`}>
-                {text}
-                <br/>
-            </React.Fragment> : <React.Fragment />
-
-    ));
-};
-const getResolution = (product) => {
-    return product.description.split(',').map((text, index) => (
-        index === 5 ?
-            <React.Fragment key={`${text}-${index}`}>
-                {text}
-                <br/>
-            </React.Fragment> : <React.Fragment />
-
-    ));
-};
-
-const getMemory = (product) => {
-    return product.description.split(',').map((text, index) => (
-        index === 3 ?
-            <React.Fragment key={`${text}-${index}`}>
-                {text}
-                <br/>
-            </React.Fragment> : <React.Fragment />
-
-    ));
-};
-const getGCard = (product) => {
-    return product.description.split(',').map((text, index) => (
+const getPrice = (product) => {
+    if(product.price !== undefined)
+        return product.price;
+    else return product.split('|').map((text, index) => (
         index === 1 ?
             <React.Fragment key={`${text}-${index}`}>
                 {text}
@@ -109,17 +83,143 @@ const getGCard = (product) => {
             </React.Fragment> : <React.Fragment />
 
     ));
+
+};
+
+const getDisplay = (product) => {
+    if(product.price !== undefined) {
+        return product.description.split(',').map((text, index) => (
+            index === 0 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    } else {
+        let description = product.split('|')[2];
+        return description.split(',').map((text, index) => (
+            index === 0 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    }
+
+};
+
+const getProcessor = (product) => {
+    if(product.price !== undefined) {
+        return product.description.split(',').map((text, index) => (
+            index === 4 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    } else {
+        let description = product.split('|')[2];
+        return description.split(',').map((text, index) => (
+            index === 4 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    }
+};
+const getResolution = (product) => {
+    if(product.price !== undefined) {
+        return product.description.split(',').map((text, index) => (
+            index === 5 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    } else {
+        let description = product.split('|')[2];
+        return description.split(',').map((text, index) => (
+            index === 5 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    }
+};
+
+const getMemory = (product) => {
+    if(product.price !== undefined) {
+        return product.description.split(',').map((text, index) => (
+            index === 3 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    } else {
+        let description = product.split('|')[2];
+        return description.split(',').map((text, index) => (
+            index === 3 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    }
+};
+const getGCard = (product) => {
+    if(product.price !== undefined) {
+        return product.description.split(',').map((text, index) => (
+            index === 1 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    } else {
+        let description = product.split('|')[2];
+        return description.split(',').map((text, index) => (
+            index === 1 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
+
+        ));
+    }
 };
 const getInternal = (product) => {
-    return product.description.split(',').map((text, index) => (
-        index === 2 ?
-            <React.Fragment key={`${text}-${index}`}>
-                {text}
-                <br/>
-            </React.Fragment> : <React.Fragment />
+    if(product.price !== undefined) {
+        return product.description.split(',').map((text, index) => (
+            index === 2 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
 
+        ));
+    } else {
+        let description = product.split('|')[2];
+        return description.split(',').map((text, index) => (
+            index === 2 ?
+                <React.Fragment key={`${text}-${index}`}>
+                    {text}
+                    <br/>
+                </React.Fragment> : <React.Fragment/>
 
-    ));
+        ));
+    }
 };
 
 
