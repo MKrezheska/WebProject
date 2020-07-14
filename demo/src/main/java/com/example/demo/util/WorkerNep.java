@@ -7,11 +7,13 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
 import lombok.Data;
+import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -68,9 +70,18 @@ public class WorkerNep implements Runnable {
             HtmlPage page = webClient.getPage(url);
 //            webClient.waitForBackgroundJavaScript(100 * 1000);
             if (this.url.contains("neptun"))
-                webClient.waitForBackgroundJavaScript(60 * 1000); // Wait for js to execute in the background for 30 seconds
-
+                webClient.waitForBackgroundJavaScript(600 * 1000); // Wait for js to execute in the background for 30 seconds
+//
             String pageAsXml = page.asXml();
+
+
+            if (this.url.contains("neptun")){
+                FileInputStream fis = new FileInputStream("C:\\Users\\user\\Desktop\\web-crawler-master\\untitled\\src\\neptun_prod.txt");
+                String prods = IOUtils.toString(fis, "UTF-8");
+                pageAsXml = prods;
+            }
+
+
 
             Document doc = Jsoup.parse(pageAsXml);
 
