@@ -16,4 +16,6 @@ public interface ProductRepository {
     Optional<Product> findByName(String name);
 
     void deleteById(Long productId);
+
+    List<Product> findByUrlContains(String store);
 }

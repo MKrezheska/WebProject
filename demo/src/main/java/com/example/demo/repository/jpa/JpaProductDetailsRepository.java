@@ -38,4 +38,8 @@ public interface JpaProductDetailsRepository extends JpaRepository<ProductDetail
                                         @Param("resolution") String resolution
     );
 
+    List<ProductDetails> findByProductUrlContains(String store);
+
+    ProductDetails findByProductId(Long id);
+
 }

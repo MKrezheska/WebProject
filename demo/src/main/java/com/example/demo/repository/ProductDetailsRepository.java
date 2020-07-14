@@ -13,6 +13,10 @@ public interface ProductDetailsRepository {
 
     void deleteById(Long productId);
 
+    ProductDetails findByProductId(Long id);
+
+    List<ProductDetails> findByProductUrlContains(String store);
+
     List<ProductDetails> searchProducts(String display, String graphicsCard, String internalMemory, String memory, String processor, String resolution);
 
 }

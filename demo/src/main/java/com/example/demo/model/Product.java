@@ -40,6 +40,21 @@ public class Product {
     @Column(name = "pricePartial")
     private String pricePartial;
 
+    @Column(name = "similar_id")
+    private Long similarId;
+
+    @Column(name = "similar_name")
+    private String similarName;
+
+    @Column(name = "similar_description", length = 2048)
+    private String similarDescription;
+
+    @Column(name = "similar_url")
+    private String similarUrl;
+
+    @Column(name = "similar_price")
+    private String similarPrice;
+
     public Product(String name, String url, String imgUrl, String description, String price, String clubPrice, String pricePartial) {
         this.name = name;
         this.url = url;

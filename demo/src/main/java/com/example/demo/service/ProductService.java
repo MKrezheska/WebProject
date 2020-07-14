@@ -16,5 +16,6 @@ public interface ProductService {
     Product updateProduct(Long productId, String name, String url, String imgUrl,String description,String price, String clubPrice,String pricePartial);
     void deleteProduct(Long productId);
     List<ProductDetails> searchProducts(String display, String graphicsCard, String internalMemory, String memory, String processor, String resolution);
-
+    List<Product> findByUrlContains(String store);
+    Product updateSimilarProduct(Long id, Product similar);
 }

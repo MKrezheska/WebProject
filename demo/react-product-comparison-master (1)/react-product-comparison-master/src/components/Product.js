@@ -5,11 +5,16 @@ import { addProduct, removeProduct } from '../redux/actions';
 import image1 from '../setec-logo.png';
 import image2 from '../neptun_logo.png'
 
+
 const isBeingCompared = (product, comparedProducts) => {
     return comparedProducts.filter(
             comparedProduct => comparedProduct.id === product.id
         ).length;
 };
+
+const appendDescription = (name, price, description) => {
+    return name+"|"+price+"|"+description;
+}
 
 const logoPicker = (product) => {
     if (product.url.includes("setec"))
@@ -47,7 +52,14 @@ const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedPr
                         <li className="list-group-item">{product.clubPrice}</li>
                         <li className="list-group-item font-weight-bold">{product.price}</li>
                         <li className="list-group-item "><small className="text-muted">{product.pricePartial}</small></li>
-
+                        <li className="list-group-item"><a href={product.similarUrl}>{product.similarName}</a><br /></li>
+                        {/*<li className="list-group-item"><button className="btn btn-lg" onClick={() => onAddToComparison(appendDescription(product.similarName, product.similarPrice, product.similarDescription)) &&*/}
+                        {/*    onAddToComparison(product) && _onButtonClick()}>Спореди</button></li>*/}
+                        <li className="list-group-item">{isBeingCompared(product, comparedProducts) ?
+                            <button className="btn btn-lg" onClick={() => onRemoveFromComparison(appendDescription(product.similarName, product.similarPrice, product.similarDescription))}>Отстрани</button> :
+                            <button className="btn btn-lg" onClick={() => onAddToComparison(appendDescription(product.similarName, product.similarPrice, product.similarDescription)) &&
+                                onAddToComparison(product) && _onButtonClick()}>Спореди</button>
+                        }</li>
                     </ul>
 
                 </div>
@@ -71,5 +83,17 @@ const mapDispatchToProps = dispatch => ({
     onAddToComparison : (product) => dispatch(addProduct(product)),
     onRemoveFromComparison : (product) => dispatch(removeProduct(product))
 });
+
+const _onButtonClick = () => {
+    let el = document.getElementById("tableID");
+    if(el != null){
+        el.style.display = "table";
+        window.scrollTo(0, document.body.scrollHeight)
+    }
+    if(el.innerText === "Изберете продукти за споредба!"){
+        el.style.display = "block";
+    }
+
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
