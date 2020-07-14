@@ -82,23 +82,23 @@ class FormSearch extends Component{
                 <button className="btn  my-2 my-sm-0 form-group colorclass" type="submit">Пребарај</button>
             </form>
                 <p></p>
-                <button className="btn  my-2 my-sm-0  form-group colorclass" onClick={_onButtonClick}>Види споредба</button>
+                {/*<button className="btn  my-2 my-sm-0  form-group colorclass" onClick={_onButtonClick}>Види споредба</button>*/}
             </div>
 
         );
     }
 }
 
-const _onButtonClick = () => {
-    let el = document.getElementById("tableID");
-    if(el != null){
-        el.style.display = "table";
-        window.scrollTo(0, document.body.scrollHeight)
-    }
-    if(el.innerText === "Изберете продукти за споредба!"){
-        el.style.display = "block";
-    }
-
-}
+// const _onButtonClick = () => {
+//     let el = document.getElementById("tableID");
+//     if(el != null){
+//         el.style.display = "table";
+//         window.scrollTo(0, document.body.scrollHeight)
+//     }
+//     if(el.innerText === "Изберете продукти за споредба!"){
+//         el.style.display = "block";
+//     }
+//
+// }
 
 export default FormSearch;

@@ -11450,3 +11450,9 @@ html {
   margin-left: 20px;
 }
 
+#root > div > div.row > div> div > div.card-body > div > ul > li> button,
+#root > div > div > div> div > div.card-body > div > ul > li > div > button{
+  font-size: 14px;
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+}

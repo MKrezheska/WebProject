@@ -111,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
             Product product = createProduct(nameRepo.get(i),
                     productRepo.get(i),
                     imgRepo.get(i),
-                    properties.toString().substring(1,properties.toString().length()-1),
+                    properties.toString().substring(1, properties.toString().length() - 1),
                     priceRepo.get(i),
                     clubPriceRepo.get(i),
                     pricePartialRepo.get(i));
@@ -122,13 +122,13 @@ public class ProductServiceImpl implements ProductService {
         }
 
         List<Product> productList = listProducts();
-        for(Product product:productList){
+        for (Product product : productList) {
             ProductDetails productDetails = this.productDetailsRepository.findByProductId(product.getId());
             Product similar = null;
-            if(product.getUrl().contains("neptun")){
+            if (product.getUrl().contains("neptun")) {
                 similar = findMostSimilarProduct(productDetails, this.productDetailsRepository.findByProductUrlContains("setec"));
             } else {
-                similar = findMostSimilarProduct(productDetails, this.productDetailsRepository.findByProductUrlContains("setec"));
+                similar = findMostSimilarProduct(productDetails, this.productDetailsRepository.findByProductUrlContains("neptun"));
             }
             updateSimilarProduct(product.getId(), similar);
         }
@@ -170,22 +170,21 @@ public class ProductServiceImpl implements ProductService {
                     fl1 = 1;
                     graphicsCard = property.trim();
                 }
-                if(graphicsCard.contains("NVDIA")){
+                if (graphicsCard.contains("NVDIA")) {
                     graphicsCard = graphicsCard.replace("NVDIA", "nVidia");
                 }
-                String temp=graphicsCard.toLowerCase();
-                if(temp.contains("vega")||temp.contains("itegrated")||temp.contains("integrated")||temp.contains("intel")||temp.contains("uma")){
-                    graphicsCard = "Integrated: " + graphicsCard ;
-                }
-                else if(temp.contains("nvidia")|temp.contains("geforce")||temp.contains("radeon")){
-                    graphicsCard = "Dedicated: " + graphicsCard ;
+                String temp = graphicsCard.toLowerCase();
+                if (temp.contains("vega") || temp.contains("itegrated") || temp.contains("integrated") || temp.contains("intel") || temp.contains("uma")) {
+                    graphicsCard = "Integrated: " + graphicsCard;
+                } else if (temp.contains("nvidia") | temp.contains("geforce") || temp.contains("radeon")) {
+                    graphicsCard = "Dedicated: " + graphicsCard;
 
                 }
             }
             if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)")) {
                 if (fl2 == 1) {
                     String temp = memory;
-                    if(!memory.trim().equals(property.trim()))
+                    if (!memory.trim().equals(property.trim()))
                         temp = temp + " +  " + property;
                     memory = temp.trim();
                 } else {
@@ -213,10 +212,10 @@ public class ProductServiceImpl implements ProductService {
                     } else
                         memory = property.trim();
                 }
-                if(memory.contains("+")) {
+                if (memory.contains("+")) {
                     memory = "TwoHDD: " + memory;
                 }
-                if(memory.contains("Т")){
+                if (memory.contains("Т")) {
                     memory = memory.replace("Т", "T");
                 }
             }
@@ -243,13 +242,13 @@ public class ProductServiceImpl implements ProductService {
                     fl = 1;
                     processor = property.trim();
                 }
-                if(processor.contains("(") && processor.trim().indexOf("(") == 0)
+                if (processor.contains("(") && processor.trim().indexOf("(") == 0)
                     processor = processor.replaceAll("[()]", "");
-                if(processor.contains(","))
+                if (processor.contains(","))
                     processor = processor.substring(0, processor.indexOf(","));
-                if(processor.contains("("))
+                if (processor.contains("("))
                     processor = processor.substring(0, processor.indexOf("("));
-                if(processor.contains(".") && processor.indexOf(".") == 0)
+                if (processor.contains(".") && processor.indexOf(".") == 0)
                     processor = processor.substring(1);
                 processor = processor.replaceAll("&trade;|&reg;|[)]", "");
                 processor = processor.trim();
@@ -291,8 +290,8 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        if(graphicsCard.equals("Not found"))
-                graphicsCard = "Integrated: " + graphicsCard ;
+        if (graphicsCard.equals("Not found"))
+            graphicsCard = "Integrated: " + graphicsCard;
 
 
         propertiesToReturn.add(display);
@@ -309,64 +308,68 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public boolean haveSameDisplay(ProductDetails product_1, ProductDetails product_2) {
-        if(!product_1.getId().equals(product_2.getId())) {
+        if (!product_1.getId().equals(product_2.getId())) {
             String forComparing_1 = product_1.getDisplay().replaceAll("[^0-9.]", "");
             String forComparing_2 = product_2.getDisplay().replaceAll("[^0-9.]", "");
             return forComparing_1.equals(forComparing_2)
                     || (forComparing_1 + ".0").equals(forComparing_2)
                     || (forComparing_2 + ".0").equals(forComparing_1);
-        } return false;
+        }
+        return false;
 
     }
 
     public boolean haveSameResolution(ProductDetails product_1, ProductDetails product_2) {
-        if(!product_1.getId().equals(product_2.getId())) {
+        if (!product_1.getId().equals(product_2.getId())) {
 
             String forComparing_1 = product_1.getResolution().replaceAll("\\s+", "").replace("X", "x");
             String forComparing_2 = product_2.getResolution().replaceAll("\\s+", "").replace("X", "x");
             return forComparing_1.equals(forComparing_2);
-        } return false;
+        }
+        return false;
 
     }
 
     public boolean haveSameInternalMemory(ProductDetails product_1, ProductDetails product_2) {
-        if(!product_1.getId().equals(product_2.getId())) {
+        if (!product_1.getId().equals(product_2.getId())) {
 
             String forComparing_1 = product_1.getInternalMemory().split("[Gg]")[0].replaceAll("[^0-9]", "");
             String forComparing_2 = product_2.getInternalMemory().split("[Gg]")[0].replaceAll("[^0-9]", "");
             return forComparing_1.equals(forComparing_2);
-        } return false;
+        }
+        return false;
 
     }
 
     public boolean haveSameGraphicsCard(ProductDetails product_1, ProductDetails product_2) {
-        if(!product_1.getId().equals(product_2.getId())) {
+        if (!product_1.getId().equals(product_2.getId())) {
 
             if (product_1.getGraphicsCard().contains("Integrated: ") && product_2.getGraphicsCard().contains("Integrated: ")) {
-            if (product_1.getGraphicsCard().toLowerCase().contains("intel")
-                    && product_2.getGraphicsCard().toLowerCase().contains("intel"))
-                return true;
-            else if (product_1.getGraphicsCard().toLowerCase().contains("vega")
-                    && product_2.getGraphicsCard().toLowerCase().contains("vega"))
-                return true;
-            else if (product_1.getGraphicsCard().toLowerCase().contains("uma")
-                    && product_2.getGraphicsCard().toLowerCase().contains("uma"))
-                return true;
-            else return product_1.getGraphicsCard().toLowerCase().matches("(.*)(itegrated|integrated)(.*)vga(.*)")
-                        && product_2.getGraphicsCard().toLowerCase().matches("(.*)(itegrated|integrated)(.*)vga(.*)");
-        } else if (product_1.getGraphicsCard().contains("Dedicated: ") && product_2.getGraphicsCard().contains("Dedicated: ")) {
-            if (product_1.getGraphicsCard().toLowerCase().contains("radeon")
-                    && product_2.getGraphicsCard().toLowerCase().contains("radeon"))
-                return true;
-            else return product_1.getGraphicsCard().toLowerCase().matches("(.*)(nvidia|geforce)(.*)")
-                    && product_2.getGraphicsCard().toLowerCase().matches("(.*)(nvidia|geforce)(.*)");
+                if (product_1.getGraphicsCard().toLowerCase().contains("intel")
+                        && product_2.getGraphicsCard().toLowerCase().contains("intel"))
+                    return true;
+                else if (product_1.getGraphicsCard().toLowerCase().contains("vega")
+                        && product_2.getGraphicsCard().toLowerCase().contains("vega"))
+                    return true;
+                else if (product_1.getGraphicsCard().toLowerCase().contains("uma")
+                        && product_2.getGraphicsCard().toLowerCase().contains("uma"))
+                    return true;
+                else return product_1.getGraphicsCard().toLowerCase().matches("(.*)(itegrated|integrated)(.*)vga(.*)")
+                            && product_2.getGraphicsCard().toLowerCase().matches("(.*)(itegrated|integrated)(.*)vga(.*)");
+            } else if (product_1.getGraphicsCard().contains("Dedicated: ") && product_2.getGraphicsCard().contains("Dedicated: ")) {
+                if (product_1.getGraphicsCard().toLowerCase().contains("radeon")
+                        && product_2.getGraphicsCard().toLowerCase().contains("radeon"))
+                    return true;
+                else return product_1.getGraphicsCard().toLowerCase().matches("(.*)(nvidia|geforce)(.*)")
+                        && product_2.getGraphicsCard().toLowerCase().matches("(.*)(nvidia|geforce)(.*)");
+            }
+            return false;
         }
-        return false;}
         return false;
     }
 
     public boolean haveSameProcessor(ProductDetails product_1, ProductDetails product_2) {
-        if(!product_1.getId().equals(product_2.getId())) {
+        if (!product_1.getId().equals(product_2.getId())) {
 
             if (product_1.getProcessor().toLowerCase().contains("i3") &&
                     product_2.getProcessor().toLowerCase().contains("i3"))
@@ -378,9 +381,24 @@ public class ProductServiceImpl implements ProductService {
                     product_2.getProcessor().toLowerCase().contains("i7"))
                 return true;
             else if (product_1.getProcessor().toLowerCase().contains("amd") &&
-                    product_2.getProcessor().toLowerCase().contains("amd"))
-                return true;
-            else if (product_1.getProcessor().toLowerCase().contains("celeron") &&
+                    product_2.getProcessor().toLowerCase().contains("amd")) {
+                        if ((product_1.getProcessor().toLowerCase().matches("(.*) 3 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r3(.*)")) &&
+                                (product_2.getProcessor().toLowerCase().matches("(.*) 3 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r3(.*)"))) {
+                            return true;
+                        } else if ((product_1.getProcessor().toLowerCase().matches("(.*) 5 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r5(.*)")) &&
+                                (product_2.getProcessor().toLowerCase().matches("(.*) 5 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r5(.*)"))) {
+                            return true;
+                        } else if ((product_1.getProcessor().toLowerCase().matches("(.*) 7 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r7(.*)")
+                                || product_1.getProcessor().toLowerCase().matches("(.*) 7-(.*)") || product_1.getProcessor().toLowerCase().matches("(.*)ryzen7(.*)")) &&
+                                (product_2.getProcessor().toLowerCase().matches("(.*) 7 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r7(.*)")
+                                        || product_2.getProcessor().toLowerCase().matches("(.*) 7-(.*)") || product_2.getProcessor().toLowerCase().matches("(.*)ryzen7(.*)"))) {
+                            return true;
+                        } else if (product_1.getProcessor().toLowerCase().matches("(.*) a4(.*)") &&
+                                product_2.getProcessor().toLowerCase().matches("(.*) a4(.*)") ) {
+                            return true;
+                        }
+
+            } else if (product_1.getProcessor().toLowerCase().contains("celeron") &&
                     product_2.getProcessor().toLowerCase().contains("celeron"))
                 return true;
             else if (product_1.getProcessor().toLowerCase().contains("pentium") &&
@@ -393,61 +411,63 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public boolean haveSameMemory(ProductDetails product_1, ProductDetails product_2) {
-        if(!product_1.getId().equals(product_2.getId())) {
+        if (!product_1.getId().equals(product_2.getId())) {
 
             if (product_1.getMemory().contains("TwoHDD") && product_2.getMemory().contains("TwoHDD")) {
-            if (product_1.getMemory().contains("1TB") && product_2.getMemory().contains("1TB")) {
-                Pattern p = Pattern.compile("(\\d\\d\\dG)|(\\d\\dG)|(\\dG)");
-                Matcher m_1 = p.matcher(product_1.getMemory());
-                Matcher m_2 = p.matcher(product_2.getMemory());
-                if (m_1.find() && m_2.find()) {
-                    return m_1.group().equals(m_2.group());
-                }
-            }
-        } else if (!product_1.getMemory().contains("TwoHDD")
-                && !product_2.getMemory().contains("TwoHDD")) {
-            if (product_1.getMemory().matches("(.*)1TB(.*)(HDD|(.*)rpm(.*))")
-                    && product_2.getMemory().matches("(.*)1TB(.*)(HDD|(.*)rpm(.*))")) {
-                return true;
-            } else if (product_1.getMemory().matches("(.*)2TB(.*)(HDD|(.*)rpm(.*))")
-                    && product_2.getMemory().matches("(.*)2TB(.*)(HDD|(.*)rpm(.*))")) {
-                return true;
-            } else if (product_1.getMemory().matches("(.*)1TB(.*)SSD(.*)")
-                    && !product_1.getMemory().contains("HDD")
-                    && !product_2.getMemory().contains("HHD")
-                    && product_2.getMemory().matches("(.*)1TB(.*)SSD(.*)")) {
-                return true;
-            } else {
-                Pattern p = Pattern.compile("\\d\\d\\d");
-                Matcher m_1 = p.matcher(product_1.getMemory());
-                Matcher m_2 = p.matcher(product_2.getMemory());
-                if (m_1.find() && m_2.find()) {
-                    if (m_1.group().equals(m_2.group())) {
-                        return true;
+                if (product_1.getMemory().contains("1TB") && product_2.getMemory().contains("1TB")) {
+                    Pattern p = Pattern.compile("(\\d\\d\\dG)|(\\d\\dG)|(\\dG)");
+                    Matcher m_1 = p.matcher(product_1.getMemory());
+                    Matcher m_2 = p.matcher(product_2.getMemory());
+                    if (m_1.find() && m_2.find()) {
+                        return m_1.group().equals(m_2.group());
                     }
+                }
+            } else if (!product_1.getMemory().contains("TwoHDD")
+                    && !product_2.getMemory().contains("TwoHDD")) {
+                if (product_1.getMemory().matches("(.*)1TB(.*)(HDD|(.*)rpm(.*))")
+                        && product_2.getMemory().matches("(.*)1TB(.*)(HDD|(.*)rpm(.*))")) {
+                    return true;
+                } else if (product_1.getMemory().matches("(.*)2TB(.*)(HDD|(.*)rpm(.*))")
+                        && product_2.getMemory().matches("(.*)2TB(.*)(HDD|(.*)rpm(.*))")) {
+                    return true;
+                } else if (product_1.getMemory().matches("(.*)1TB(.*)SSD(.*)")
+                        && !product_1.getMemory().contains("HDD")
+                        && !product_2.getMemory().contains("HHD")
+                        && product_2.getMemory().matches("(.*)1TB(.*)SSD(.*)")) {
+                    return true;
                 } else {
-                    p = Pattern.compile("\\d\\d");
-                    m_1 = p.matcher(product_1.getMemory());
-                    m_2 = p.matcher(product_2.getMemory());
+                    Pattern p = Pattern.compile("\\d\\d\\d");
+                    Matcher m_1 = p.matcher(product_1.getMemory());
+                    Matcher m_2 = p.matcher(product_2.getMemory());
                     if (m_1.find() && m_2.find()) {
                         if (m_1.group().equals(m_2.group())) {
                             return true;
                         }
+                    } else {
+                        p = Pattern.compile("\\d\\d");
+                        m_1 = p.matcher(product_1.getMemory());
+                        m_2 = p.matcher(product_2.getMemory());
+                        if (m_1.find() && m_2.find()) {
+                            if (m_1.group().equals(m_2.group())) {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        return false;}return false;
+            return false;
+        }
+        return false;
     }
 
-    public Product getMostSimilarPrice(Product product_1, List<Product> products){
+    public Product getMostSimilarPrice(Product product_1, List<Product> products) {
 
         int mainPrice = Integer.parseInt(product_1.getPrice().replaceAll("[^0-9]", ""));
         int mostSimilarPrice = Integer.parseInt(products.get(0).getPrice().replaceAll("[^0-9]", ""));
         Product mostSimilarProductByPrice = products.get(0);
-        for(Product product : products){
-            if(!product.getId().equals(product_1.getId())) {
+        for (Product product : products) {
+            if (!product.getId().equals(product_1.getId())) {
                 int difference = Math.abs(Integer.parseInt(product.getPrice().replaceAll("[^0-9]", "")) - mainPrice);
                 if (difference < mostSimilarPrice) {
                     mostSimilarPrice = difference;
@@ -458,47 +478,49 @@ public class ProductServiceImpl implements ProductService {
         return mostSimilarProductByPrice;
     }
 
-    public int findMaxSimilarities(ProductDetails product_1, List<ProductDetails> products){
+    public int findMaxSimilarities(ProductDetails product_1, List<ProductDetails> products) {
         int similarities = 0;
         int maxSimilarities = 0;
-        for(ProductDetails product : products){
-            if(!product_1.getId().equals(product.getId())) {
+        for (ProductDetails product : products) {
+            if (!product_1.getId().equals(product.getId())) {
 
-                if(haveSameDisplay(product_1, product)) similarities++;
-            if(haveSameGraphicsCard(product_1, product)) similarities++;
-            if(haveSameInternalMemory(product_1, product)) similarities++;
-            if(haveSameMemory(product_1, product)) similarities++;
-            if(haveSameProcessor(product_1, product)) similarities++;
-            if(haveSameResolution(product_1, product)) similarities++;
-            System.out.println(similarities);
-            if(similarities > maxSimilarities){
-                maxSimilarities = similarities;
-            }}
+                if (haveSameDisplay(product_1, product)) similarities += 1;
+                if (haveSameGraphicsCard(product_1, product)) similarities += 1;
+                if (haveSameInternalMemory(product_1, product)) similarities += 2;
+                if (haveSameMemory(product_1, product)) similarities += 2;
+                if (haveSameProcessor(product_1, product)) similarities += 3;
+                if (haveSameResolution(product_1, product)) similarities += 1;
+                System.out.println(similarities);
+                if (similarities > maxSimilarities) {
+                    maxSimilarities = similarities;
+                }
+            }
             similarities = 0;
         }
         return maxSimilarities;
     }
 
-    public Product findMostSimilarProduct(ProductDetails product_1, List<ProductDetails> products){
+    public Product findMostSimilarProduct(ProductDetails product_1, List<ProductDetails> products) {
         int maxSimilarities = findMaxSimilarities(product_1, products);
         System.out.println(maxSimilarities);
         int similarities = 0;
         List<ProductDetails> productsWithSameNumberSimilarities = new ArrayList<>();
-        for(ProductDetails product : products){
-            if(!product_1.getId().equals(product.getId())) {
+        for (ProductDetails product : products) {
+            if (!product_1.getId().equals(product.getId())) {
 
-                if(haveSameDisplay(product_1, product)) similarities++;
-            if(haveSameGraphicsCard(product_1, product)) similarities++;
-            if(haveSameInternalMemory(product_1, product)) similarities++;
-            if(haveSameMemory(product_1, product)) similarities++;
-            if(haveSameProcessor(product_1, product)) similarities++;
-            if(haveSameResolution(product_1, product)) similarities++;
-            if(similarities == maxSimilarities){
-                productsWithSameNumberSimilarities.add(product);
-            }}
+                if (haveSameDisplay(product_1, product)) similarities += 1;
+                if (haveSameGraphicsCard(product_1, product)) similarities += 1;
+                if (haveSameInternalMemory(product_1, product)) similarities += 2;
+                if (haveSameMemory(product_1, product)) similarities += 2;
+                if (haveSameProcessor(product_1, product)) similarities += 3;
+                if (haveSameResolution(product_1, product)) similarities += 1;
+                if (similarities == maxSimilarities) {
+                    productsWithSameNumberSimilarities.add(product);
+                }
+            }
             similarities = 0;
         }
-        List<Product> productList = products.stream().map(ProductDetails::getProduct).collect(Collectors.toList());
+        List<Product> productList = productsWithSameNumberSimilarities.stream().map(ProductDetails::getProduct).collect(Collectors.toList());
         return getMostSimilarPrice(product_1.getProduct(), productList);
     }
 

@@ -8,12 +8,26 @@ import image2 from '../neptun_logo.png'
 
 const isBeingCompared = (product, comparedProducts) => {
     return comparedProducts.filter(
-            comparedProduct => comparedProduct.id === product.id
+            comparedProduct => comparedProduct.id === product
         ).length;
 };
-
-const appendDescription = (name, price, description) => {
-    return name+"|"+price+"|"+description;
+const areBeingCompared = (product, comparedProducts) => {
+    console.log("Glegaj:" + product + " " + product.similarId);
+    console.log(comparedProducts)
+    console.log(comparedProducts.filter(
+        comparedProduct => comparedProduct.id === product
+    ).length )
+    console.log(comparedProducts.filter(
+        comparedProduct => comparedProduct.id === product.similarId
+    ).length)
+    return comparedProducts.filter(
+        comparedProduct => comparedProduct.id === product
+    ).length >= 1 && comparedProducts.filter(
+        comparedProduct => comparedProduct.id === product.similarId
+    ).length >= 0;
+};
+const appendDescription = (id, name, price, description) => {
+    return id + "|" + name+"|"+price+"|"+description;
 }
 
 const logoPicker = (product) => {
@@ -31,7 +45,7 @@ const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedPr
                 </div>
                 <div className="overlay"></div>
                 <div className="middle">
-                    {isBeingCompared(product, comparedProducts) ?
+                    {isBeingCompared(product.id, comparedProducts) ?
                         <button className="btn btn-lg" onClick={() => onRemoveFromComparison(product)}>Отстрани</button> :
                         <button className="btn btn-lg" onClick={() => onAddToComparison(product)}>Спореди</button>
                     }
@@ -52,19 +66,36 @@ const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedPr
                         <li className="list-group-item">{product.clubPrice}</li>
                         <li className="list-group-item font-weight-bold">{product.price}</li>
                         <li className="list-group-item "><small className="text-muted">{product.pricePartial}</small></li>
-                        <li className="list-group-item"><a href={product.similarUrl}>{product.similarName}</a><br /></li>
+                        {/*<li className="list-group-item"><a href={product.similarUrl}>{product.similarName}</a><br /></li>*/}
                         {/*<li className="list-group-item"><button className="btn btn-lg" onClick={() => onAddToComparison(appendDescription(product.similarName, product.similarPrice, product.similarDescription)) &&*/}
                         {/*    onAddToComparison(product) && _onButtonClick()}>Спореди</button></li>*/}
-                        <li className="list-group-item">{isBeingCompared(product, comparedProducts) ?
-                            <button className="btn btn-lg" onClick={() => onRemoveFromComparison(appendDescription(product.similarName, product.similarPrice, product.similarDescription))}>Отстрани</button> :
-                            <button className="btn btn-lg" onClick={() => onAddToComparison(appendDescription(product.similarName, product.similarPrice, product.similarDescription)) &&
-                                onAddToComparison(product) && _onButtonClick()}>Спореди</button>
+                        <li className="list-group-item">{comparedProducts.length < 1 ?
+                            <button className="btn btn-lg" onClick={() => onAddToComparison(appendDescription(product.similarId,product.similarName, product.similarPrice, product.similarDescription)) && onAddToComparison(product)}>Спореди со најсличниот продукт од другата продавница</button>:
+                            <div>
+                                <button className="btn btn-lg" disabled={true}>Спореди со најсличниот продукт од другата продавница</button>
+                                {isBeingCompared(product.id, comparedProducts)?
+                                    comparedProducts.length == 2 ?
+                                        comparedProducts[1].similarId == (comparedProducts[0]+"").split("|")[0]  ?
+                                            <button className="btn btn-lg"
+                                                    onClick={() => onRemoveFromComparison(appendDescription(product.similarId,product.similarName, product.similarPrice, product.similarDescription)) && onRemoveFromComparison(product)}>Отстрани
+                                                ги продуктите од споредбата</button>
+                                            :null
+
+                                            :null:null
+
+                                    // <button className="btn btn-lg"
+                                    //         disabled={true}>Отстрани
+                                    //     ги продуктите од споредбата</button>
+
+                                }
+                            </div>
                         }</li>
                     </ul>
 
                 </div>
             </div>
         </div>
+
     </div>
 ;
 
@@ -72,7 +103,8 @@ Product.propTypes = {
     product : PropTypes.object.isRequired,
     onAddToComparison : PropTypes.func.isRequired,
     onRemoveFromComparison : PropTypes.func.isRequired,
-    comparedProducts : PropTypes.array.isRequired
+    comparedProducts : PropTypes.array.isRequired,
+    onRemove : PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -84,16 +116,17 @@ const mapDispatchToProps = dispatch => ({
     onRemoveFromComparison : (product) => dispatch(removeProduct(product))
 });
 
-const _onButtonClick = () => {
-    let el = document.getElementById("tableID");
-    if(el != null){
-        el.style.display = "table";
-        window.scrollTo(0, document.body.scrollHeight)
-    }
-    if(el.innerText === "Изберете продукти за споредба!"){
-        el.style.display = "block";
-    }
 
-}
+// const _onButtonClick = () => {
+//     let el = document.getElementById("tableID");
+//     if(el != null){
+//         el.style.display = "table";
+//         window.scrollTo(0, document.body.scrollHeight)
+//     }
+//     if(el.innerText === "Изберете продукти за споредба!"){
+//         el.style.display = "block";
+//     }
+//
+// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
