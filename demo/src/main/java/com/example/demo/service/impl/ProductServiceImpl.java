@@ -95,12 +95,15 @@ public class ProductServiceImpl implements ProductService {
         }
 
         ArrayList<String> productDesc = new ArrayList<>(500);
+        ArrayList<String> fullDescRepo = new ArrayList<>(500);
+
 
         // Retrieve results
         for (WorkerDesc w : workers2) {
             ArrayList<String> prodd = w.waitForResults();
             if (prodd != null) {
                 productDesc.addAll(prodd);
+                fullDescRepo.addAll(w.getProductFullDesc());
             } else
                 System.err.println(w.getName() + " had some error!");
         }
@@ -114,7 +117,8 @@ public class ProductServiceImpl implements ProductService {
                     properties.toString().substring(1, properties.toString().length() - 1),
                     priceRepo.get(i),
                     clubPriceRepo.get(i),
-                    pricePartialRepo.get(i));
+                    pricePartialRepo.get(i),
+                    fullDescRepo.get(i));
             // ovde da ja povikuvame funkcijata so ke vrakjat lista od properties za dadeno description vo properties lista
             productDetailsRepository.save(properties.get(0), properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), product);
 
@@ -382,21 +386,21 @@ public class ProductServiceImpl implements ProductService {
                 return true;
             else if (product_1.getProcessor().toLowerCase().contains("amd") &&
                     product_2.getProcessor().toLowerCase().contains("amd")) {
-                        if ((product_1.getProcessor().toLowerCase().matches("(.*) 3 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r3(.*)")) &&
-                                (product_2.getProcessor().toLowerCase().matches("(.*) 3 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r3(.*)"))) {
-                            return true;
-                        } else if ((product_1.getProcessor().toLowerCase().matches("(.*) 5 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r5(.*)")) &&
-                                (product_2.getProcessor().toLowerCase().matches("(.*) 5 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r5(.*)"))) {
-                            return true;
-                        } else if ((product_1.getProcessor().toLowerCase().matches("(.*) 7 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r7(.*)")
-                                || product_1.getProcessor().toLowerCase().matches("(.*) 7-(.*)") || product_1.getProcessor().toLowerCase().matches("(.*)ryzen7(.*)")) &&
-                                (product_2.getProcessor().toLowerCase().matches("(.*) 7 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r7(.*)")
-                                        || product_2.getProcessor().toLowerCase().matches("(.*) 7-(.*)") || product_2.getProcessor().toLowerCase().matches("(.*)ryzen7(.*)"))) {
-                            return true;
-                        } else if (product_1.getProcessor().toLowerCase().matches("(.*) a4(.*)") &&
-                                product_2.getProcessor().toLowerCase().matches("(.*) a4(.*)") ) {
-                            return true;
-                        }
+                if ((product_1.getProcessor().toLowerCase().matches("(.*) 3 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r3(.*)")) &&
+                        (product_2.getProcessor().toLowerCase().matches("(.*) 3 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r3(.*)"))) {
+                    return true;
+                } else if ((product_1.getProcessor().toLowerCase().matches("(.*) 5 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r5(.*)")) &&
+                        (product_2.getProcessor().toLowerCase().matches("(.*) 5 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r5(.*)"))) {
+                    return true;
+                } else if ((product_1.getProcessor().toLowerCase().matches("(.*) 7 (.*)") || product_1.getProcessor().toLowerCase().matches("(.*)r7(.*)")
+                        || product_1.getProcessor().toLowerCase().matches("(.*) 7-(.*)") || product_1.getProcessor().toLowerCase().matches("(.*)ryzen7(.*)")) &&
+                        (product_2.getProcessor().toLowerCase().matches("(.*) 7 (.*)") || product_2.getProcessor().toLowerCase().matches("(.*)r7(.*)")
+                                || product_2.getProcessor().toLowerCase().matches("(.*) 7-(.*)") || product_2.getProcessor().toLowerCase().matches("(.*)ryzen7(.*)"))) {
+                    return true;
+                } else if (product_1.getProcessor().toLowerCase().matches("(.*) a4(.*)") &&
+                        product_2.getProcessor().toLowerCase().matches("(.*) a4(.*)")) {
+                    return true;
+                }
 
             } else if (product_1.getProcessor().toLowerCase().contains("celeron") &&
                     product_2.getProcessor().toLowerCase().contains("celeron"))
@@ -530,8 +534,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(String name, String url, String imgUrl, String description, String price, String clubPrice, String pricePartial) {
-        Product product = new Product(name, url, imgUrl, description, price, clubPrice, pricePartial);
+    public Product createProduct(String name, String url, String imgUrl, String description, String price, String clubPrice, String pricePartial, String fullDescription) {
+        Product product = new Product(name, url, imgUrl, description, price, clubPrice, pricePartial, fullDescription);
         return this.productRepository.save(product);
     }
 

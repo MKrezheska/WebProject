@@ -11,7 +11,7 @@ public interface ProductService {
 
     void loadContents() throws IOException;
     List<Product> listProducts() throws IOException;
-    Product createProduct(String name, String url, String imgUrl,String description,String price, String clubPrice,String pricePartial);
+    Product createProduct(String name, String url, String imgUrl,String description,String price, String clubPrice,String pricePartial, String fullDescription);
     Product getProduct(Long productId);
     Product updateProduct(Long productId, String name, String url, String imgUrl,String description,String price, String clubPrice,String pricePartial);
     void deleteProduct(Long productId);

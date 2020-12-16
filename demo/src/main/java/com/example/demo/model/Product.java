@@ -55,7 +55,10 @@ public class Product {
     @Column(name = "similar_price")
     private String similarPrice;
 
-    public Product(String name, String url, String imgUrl, String description, String price, String clubPrice, String pricePartial) {
+    @Column(name = "fullDesc", length = 2048)
+    private String fullDescription;
+
+    public Product(String name, String url, String imgUrl, String description, String price, String clubPrice, String pricePartial, String fullDescription) {
         this.name = name;
         this.url = url;
         this.imgUrl = imgUrl;
@@ -63,6 +66,7 @@ public class Product {
         this.price = price;
         this.clubPrice = clubPrice;
         this.pricePartial = pricePartial;
+        this.fullDescription = fullDescription;
     }
 
     @Override

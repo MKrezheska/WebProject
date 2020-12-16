@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class WorkerDesc implements Runnable {
     private String url;
     private Element results;
     private ArrayList<String> productDesc;
+    private ArrayList<String> productFullDesc;
     private String name;
     private static int number = 0;
 
@@ -25,6 +27,11 @@ public class WorkerDesc implements Runnable {
         this.url = url;
         this.name = "Worker-" + (number++);
         productDesc=new ArrayList<>();
+        productFullDesc = new ArrayList<>();
+    }
+
+    public ArrayList<String> getProductFullDesc() {
+        return productFullDesc;
     }
 
     public String getName() {
@@ -96,6 +103,7 @@ public class WorkerDesc implements Runnable {
                     String inp = String.join(" | ", a).replaceAll("&quot;", "\"");
 //                                String inp =p.toString();
                     productDesc.add(inp);
+                    productFullDesc.add(desc.text());
                 }
 
 
@@ -113,7 +121,7 @@ public class WorkerDesc implements Runnable {
                             .collect(Collectors.toCollection(ArrayList::new));
                     String inp = String.join(" | ", p).replaceAll("&quot;", "\"");
                     productDesc.add(inp);
-
+                    productFullDesc.add(desc.attr("content"));
 
                 }
 
