@@ -3,9 +3,12 @@ package com.example.demo.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 //@Table(name = "PRODUCTS")
@@ -40,20 +43,26 @@ public class Product {
     @Column(name = "pricePartial")
     private String pricePartial;
 
-    @Column(name = "similar_id")
-    private Long similarId;
+//    @OneToMany(mappedBy = "firstProduct")
+//    List<Similar> similar_to_1;
+//
+//    @OneToMany(mappedBy = "secondProduct")
+//    List<Similar> similar_to_2;
 
-    @Column(name = "similar_name")
-    private String similarName;
-
-    @Column(name = "similar_description", length = 2048)
-    private String similarDescription;
-
-    @Column(name = "similar_url")
-    private String similarUrl;
-
-    @Column(name = "similar_price")
-    private String similarPrice;
+//    @Column(name = "similar_id")
+//    private Long similarId;
+//
+//    @Column(name = "similar_name")
+//    private String similarName;
+//
+//    @Column(name = "similar_description", length = 2048)
+//    private String similarDescription;
+//
+//    @Column(name = "similar_url")
+//    private String similarUrl;
+//
+//    @Column(name = "similar_price")
+//    private String similarPrice;
 
     @Column(name = "fullDesc", length = 2048)
     private String fullDescription;

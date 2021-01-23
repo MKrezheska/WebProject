@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 import { addProduct, removeProduct } from '../redux/actions';
 import image1 from '../setec-logo.png';
 import image2 from '../neptun_logo.png'
+import {getSimilarToProduct} from "../api/api";
+
 
 
 const isBeingCompared = (product, comparedProducts) => {
+    console.log(product)
+    console.log(comparedProducts)
     return comparedProducts.filter(
-            comparedProduct => comparedProduct.id === product
+            comparedProduct => comparedProduct.product.id === product
         ).length;
 };
 const areBeingCompared = (product, comparedProducts) => {
@@ -26,9 +30,11 @@ const areBeingCompared = (product, comparedProducts) => {
         comparedProduct => comparedProduct.id === product.similarId
     ).length >= 0;
 };
-const appendDescription = (id, name, price, description) => {
-    return id + "|" + name+"|"+price+"|"+description;
+const appendDescription = (id, name, price, description,url) => {
+    return id + "|" + name+"|"+price+"|"+description+"|"+url;
 }
+
+
 
 const logoPicker = (product) => {
     if (product.url.includes("setec"))
@@ -36,20 +42,20 @@ const logoPicker = (product) => {
     else return image2;
 };
 
-const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedProducts}) =>
+const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedProducts, similar}) =>
     <div className="col-md-7 col-lg-3 col-sm-6">
         <div className="product">
             <div className="card" >
                 <div className="image-container">
                     <img className="card-img-top" src={product.imgUrl} alt={product.name} style={{width: 228 + "px", height: 228 + "px", objectFit: "scale-down" }}/>
                 </div>
-                <div className="overlay"></div>
-                <div className="middle">
-                    {isBeingCompared(product.id, comparedProducts) ?
-                        <button className="btn btn-lg" onClick={() => onRemoveFromComparison(product)}>Отстрани</button> :
-                        <button className="btn btn-lg" onClick={() => onAddToComparison(product)}>Спореди</button>
-                    }
-                </div>
+                {/*<div className="overlay"></div>*/}
+                {/*<div className="middle">*/}
+                {/*    {isBeingCompared(product.id, comparedProducts) ?*/}
+                {/*        <button className="btn btn-lg" onClick={() => onRemoveFromComparison(product)}>Отстрани</button> :*/}
+                {/*        <button className="btn btn-lg" onClick={() => onAddToComparison(product)}>Спореди</button>*/}
+                {/*    }*/}
+                {/*</div>*/}
             </div>
 
             <div className="card-body">
@@ -69,19 +75,21 @@ const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedPr
                         {/*<li className="list-group-item"><a href={product.similarUrl}>{product.similarName}</a><br /></li>*/}
                         {/*<li className="list-group-item"><button className="btn btn-lg" onClick={() => onAddToComparison(appendDescription(product.similarName, product.similarPrice, product.similarDescription)) &&*/}
                         {/*    onAddToComparison(product) && _onButtonClick()}>Спореди</button></li>*/}
-                        <li className="list-group-item">{comparedProducts.length < 1 ?
-                            <button className="btn btn-lg" onClick={() => onAddToComparison(appendDescription(product.similarId,product.similarName, product.similarPrice, product.similarDescription)) && onAddToComparison(product)}>Спореди со најсличниот продукт од другата продавница</button>:
+                        {/*<li className="list-group-item">*/}
+                        {/*    <h5 className="card-title" style={{fontSize: 1+"rem"}}>*/}
+                        {/*        <a href={product.similarUrl}>{product.similarName}</a><br />*/}
+                        {/*    </h5>*/}
+                        {/*</li>*/}
+                        <li className="list-group-item">{comparedProducts.length === 0 ?
+                            <button className="btn btn-lg" onClick={() =>  getSimilarToProduct(product.id).then(data => onAddToComparison(data))}>Спореди со најсличниот продукт од другата продавница</button>:
                             <div>
                                 <button className="btn btn-lg" disabled={true}>Спореди со најсличниот продукт од другата продавница</button>
                                 {isBeingCompared(product.id, comparedProducts)?
-                                    comparedProducts.length == 2 ?
-                                        comparedProducts[1].similarId == (comparedProducts[0]+"").split("|")[0]  ?
                                             <button className="btn btn-lg"
-                                                    onClick={() => onRemoveFromComparison(appendDescription(product.similarId,product.similarName, product.similarPrice, product.similarDescription)) && onRemoveFromComparison(product)}>Отстрани
+                                                    onClick={() => onRemoveFromComparison(comparedProducts)}>Отстрани
                                                 ги продуктите од споредбата</button>
-                                            :null
 
-                                            :null:null
+                                            :null
 
                                     // <button className="btn btn-lg"
                                     //         disabled={true}>Отстрани
@@ -103,8 +111,7 @@ Product.propTypes = {
     product : PropTypes.object.isRequired,
     onAddToComparison : PropTypes.func.isRequired,
     onRemoveFromComparison : PropTypes.func.isRequired,
-    comparedProducts : PropTypes.array.isRequired,
-    onRemove : PropTypes.array.isRequired
+    comparedProducts : PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -112,9 +119,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onAddToComparison : (product) => dispatch(addProduct(product)),
+    onAddToComparison : (products) => dispatch(addProduct(products)),
     onRemoveFromComparison : (product) => dispatch(removeProduct(product))
 });
+
 
 
 // const _onButtonClick = () => {

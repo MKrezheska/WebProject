@@ -2,9 +2,12 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductDetails;
+import com.example.demo.model.ProductDto;
+import com.example.demo.model.Similar;
 import com.example.demo.model.exceptions.InvalidProductIdException;
 import com.example.demo.repository.ProductDetailsRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.repository.SimilarRepository;
 import com.example.demo.service.ProductService;
 
 //import com.gargoylesoftware.htmlunit.javascript.JavaScriptErrorListener;
@@ -14,9 +17,13 @@ import com.example.demo.util.WorkerNep;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.xml.crypto.dsig.SignedInfo;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -26,10 +33,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductDetailsRepository productDetailsRepository;
+    private final SimilarRepository similarRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductDetailsRepository productDetailsRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductDetailsRepository productDetailsRepository, SimilarRepository similarRepository) {
         this.productRepository = productRepository;
         this.productDetailsRepository = productDetailsRepository;
+        this.similarRepository = similarRepository;
     }
 
     public List<WorkerNep> workers;
@@ -40,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
 
     @PostConstruct
     @Override
-    public void loadContents() {
+    public void loadContents() throws FileNotFoundException {
 
         String[] urls = new String[]{
                 "http://setec.mk/index.php?route=product/category&path=10002_10003&limit=100&page=",
@@ -119,22 +128,20 @@ public class ProductServiceImpl implements ProductService {
                     clubPriceRepo.get(i),
                     pricePartialRepo.get(i),
                     fullDescRepo.get(i));
+
             // ovde da ja povikuvame funkcijata so ke vrakjat lista od properties za dadeno description vo properties lista
             productDetailsRepository.save(properties.get(0), properties.get(1), properties.get(2), properties.get(3), properties.get(4), properties.get(5), product);
 
 
         }
 
-        List<Product> productList = listProducts();
-        for (Product product : productList) {
-            ProductDetails productDetails = this.productDetailsRepository.findByProductId(product.getId());
-            Product similar = null;
-            if (product.getUrl().contains("neptun")) {
-                similar = findMostSimilarProduct(productDetails, this.productDetailsRepository.findByProductUrlContains("setec"));
-            } else {
-                similar = findMostSimilarProduct(productDetails, this.productDetailsRepository.findByProductUrlContains("neptun"));
-            }
-            updateSimilarProduct(product.getId(), similar);
+        Scanner in = new Scanner(new FileInputStream("C:\\Users\\Magdalena\\OneDrive\\Web Programming\\WebProject\\demo\\similarities.csv"));
+        while (in.hasNextLine()) {
+            String[] parts = in.nextLine().split("\t");
+            Product product = getProduct(Long.parseLong(parts[0]));
+            List<Similar> products = new ArrayList<>();
+            products.add(new Similar(product.getId(), Long.parseLong(parts[1]), false));
+            similarRepository.save(new Similar(product.getId(), Long.parseLong(parts[1]), false));
         }
 
     }
@@ -574,15 +581,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateSimilarProduct(Long id, Product similar) {
-        Product product = this.productRepository.findById(id).orElseThrow(InvalidProductIdException::new);
-        product.setSimilarId(similar.getId());
-        product.setSimilarName(similar.getName());
-        product.setSimilarUrl(similar.getUrl());
-        product.setSimilarDescription(similar.getDescription());
-        product.setSimilarPrice(similar.getPrice());
-        return this.productRepository.save(product);
+    public Boolean updateSimilarProduct(Long id, Long similar) {
+        return this.similarRepository.updateMostSimilar(id, similar);
     }
+
+    @Override
+    public List<ProductDto> getProductAndSimilarProducts(Long id) {
+        List<ProductDto> toReturn = new ArrayList<>();
+        List<Similar> similar = this.similarRepository.getByProductId(id);
+        ProductDto currentProduct = new ProductDto(getProduct(id), (long) -1);
+        toReturn.add(currentProduct);
+        for (Similar s: similar) {
+            if (s.getMostSimilar()) {
+                currentProduct.setMostSimilarId(s.getSecondProduct());
+            }
+            toReturn.add(new ProductDto(getProduct(s.getSecondProduct()), (long) 0));
+        }
+        return toReturn;
+    }
+
+//    @Override
+//    public Product updateSimilarProduct(Long id, Product similar) {
+//        Product product = this.productRepository.findById(id).orElseThrow(InvalidProductIdException::new);
+//        product.setSimilarId(similar.getId());
+//        product.setSimilarName(similar.getName());
+//        product.setSimilarUrl(similar.getUrl());
+//        product.setSimilarDescription(similar.getDescription());
+//        product.setSimilarPrice(similar.getPrice());
+//        return this.productRepository.save(product);
+//    }
 
 
 }

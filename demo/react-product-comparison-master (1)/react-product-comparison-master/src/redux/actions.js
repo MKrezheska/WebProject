@@ -1,11 +1,11 @@
 import * as constants from './constants';
 
-export const addProduct = (product) => ({
+export const addProduct = (products) => ({
     type : constants.ADD_PRODUCT,
-    product
+    products
 });
 
-export const removeProduct = (product) => ({
+export const removeProduct = (products) => ({
     type : constants.REMOVE_PRODUCT,
-    productId : product.id
+    products
 });

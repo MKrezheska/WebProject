@@ -2,53 +2,80 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const Comparison = ({products}) =>
-    products.length >= -1 ?
-        <div className="row">
+const Comparison = ({products}) => {
+
+    if(products.length >= -1) {
+        let currentProduct = products[0];
+        let displayChooseMostSimilarButton = false;
+        if (currentProduct !== undefined) {
+            displayChooseMostSimilarButton = currentProduct.mostSimilarId === -1;}
+        console.log("current", currentProduct)
+        return(<div className="row">
             <table id="tableID" className="table">
                 <thead>
                 <tr>
                     <th className="table-light">&nbsp;</th>
-                    { products.map(product => <th key={`th-${getId(product)}`} className="text-center table-light">{getName(product)}</th>) }
+                    {products.map(product => product.product.id !== currentProduct.mostSimilarId ? <th key={`th-${getId(product.product)}`}
+                                                 className="text-center table-light">{getName(product.product)}</th>:
+                        <th key={`th-${getId(product.product)}`}
+                            className="text-center table-active">{getName(product.product)}</th>
+                    )}
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <th className="table-light">Цена</th>
-                    { products.map(product => <td key={`url-td-${getId(product)}`} className="text-center table-light">{getPrice(product)}</td>) }
+                    {products.map(product => <td key={`url-td-${getId(product.product)}`}
+                                                 className="text-center table-light">{getPrice(product.product)}</td>)}
                 </tr>
                 <tr>
                     <th className="table-light">Дисплеј</th>
-                    { products.map(product => <td id="tab-description" key={`description-td-${getId(product)}`} className="text-center table-light">{getDisplay(product)}</td>) }
+                    {products.map(product => <td id="tab-description" key={`description-td-${getId(product.product)}`}
+                                                 className="text-center table-light">{getDisplay(product.product)}</td>)}
                 </tr>
                 <tr>
                     <th className="table-light">Резолуција</th>
-                    { products.map(product => <td id="tab-description" key={`description-td-${getId(product)}`} className="text-center table-light">{getResolution(product)}</td>) }
+                    {products.map(product => <td id="tab-description" key={`description-td-${getId(product.product)}`}
+                                                 className="text-center table-light">{getResolution(product.product)}</td>)}
                 </tr>
                 <tr>
                     <th className="table-light">Графичка картичка</th>
-                    { products.map(product => <td id="tab-description" key={`description-td-${getId(product)}`} className="text-center table-light">{getGCard(product)}</td>) }
+                    {products.map(product => <td id="tab-description" key={`description-td-${getId(product.product)}`}
+                                                 className="text-center table-light">{getGCard(product.product)}</td>)}
                 </tr>
                 <tr>
                     <th className="table-light">Внатрешна меморија</th>
-                    { products.map(product => <td id="tab-description" key={`description-td-${getId(product)}`} className="text-center table-light">{getInternal(product)}</td>) }
+                    {products.map(product => <td id="tab-description" key={`description-td-${getId(product.product)}`}
+                                                 className="text-center table-light">{getInternal(product.product)}</td>)}
                 </tr>
                 <tr>
                     <th className="table-light">Меморија</th>
-                    { products.map(product => <td id="tab-description" key={`description-td-${getId(product)}`} className="text-center table-light">{getMemory(product)}</td>) }
+                    {products.map(product => <td id="tab-description" key={`description-td-${getId(product.product)}`}
+                                                 className="text-center table-light">{getMemory(product.product)}</td>)}
                 </tr>
                 <tr>
                     <th className="table-light">Процесор</th>
-                    { products.map(product => <td id="tab-description" key={`description-td-${getId(product)}`} className="text-center table-light">{getProcessor(product)}</td>) }
+                    {products.map(product => <td id="tab-description" key={`description-td-${getId(product.product)}`}
+                                                 className="text-center table-light">{getProcessor(product.product)}</td>)}
                 </tr>
 
+                {displayChooseMostSimilarButton ?
+                    <tr>
+                        <th className="table-light">Избери најсличен продукт</th>
+                        {products.map(product => <td id="tab-description"
+                                                     key={`description-td-${getId(product.product)}`}
+                                                     className="text-center table-light">
+                            <button className="btn btn-info" onClick={() => console.log("clickhed")}>Избери</button>
+                        </td>)}
+                    </tr>: <tr><td colSpan={4} className="text-info small"><i>Потенцираниот производ е избран за најсличен.</i></td></tr>
+                }
 
                 </tbody>
             </table>
-        </div> :
-        <div id="tableID" className="text-info text-center">Изберете продукти за споредба!</div>
+        </div>) } else {
+        return(<div id="tableID" className="text-info text-center">Изберете продукти за споредба!</div>)}
 
-;
+};
 
 Comparison.propTypes = {
     products : PropTypes.array.isRequired
