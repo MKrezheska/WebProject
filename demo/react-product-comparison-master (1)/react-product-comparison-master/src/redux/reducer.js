@@ -1,15 +1,18 @@
 import * as constants from './constants';
+import * as R from 'ramda';
 
 const initialState = {
-    products : []
+    products: []
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+
         case constants.ADD_PRODUCT:
-            let products_1 = [...state.products, action.product];
-            if(products_1.length <= 2) {
-                if (products_1.length > 1) {
+            let products_3 = [...state.products].concat(action.products);
+            console.log(products_3)
+            if (products_3.length <= 3) {
+                if (products_3.length > 0) {
                     let el = document.getElementById("tableID");
                     if (el != null) {
                         el.style.display = "table";
@@ -19,20 +22,23 @@ const reducer = (state = initialState, action) => {
                         el.style.display = "block";
                     }
                 }
-                return {...state, products: products_1};
+                console.log(products_3)
+                return {...state, products: products_3};
             }
             return {...state, products: state.products};
 
+
         case constants.REMOVE_PRODUCT:
-            const idx = state.products.findIndex(product => product.id === action.productId);
-            let products = [...state.products];
-            if (products.length <= 1) {
+            let products_2 = [];
+            state.products.forEach(product => action.products.indexOf(product) === -1 ? products_2.push(product) : null);
+            console.log('reducer', products_2)
+            if (products_2.length <= 1) {
                 let el = document.getElementById("tableID");
-                    el.style.display = "none";
+                el.style.display = "none";
             }
-            products.splice(idx, 1);
-            return {...state, products};
-        default : return state;
+            return {...state, products: products_2};
+        default :
+            return state;
     }
 };
 

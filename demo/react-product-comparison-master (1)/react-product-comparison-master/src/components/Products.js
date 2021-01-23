@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Loader from './common/Loader';
-import {loadProducts, searchProducts} from '../api/api';
+import {getSimilarToProduct, loadProducts, searchProducts} from '../api/api';
 import Product from './Product';
 import ReactPaginate from 'react-paginate';
 import Header from "./Header";
@@ -15,7 +15,8 @@ class Products extends Component {
             loading: true,
             elements: [],
             perPage: 3,
-            currentPage: 0
+            currentPage: 0,
+            similar: []
         };
     }
 
@@ -25,6 +26,7 @@ class Products extends Component {
                 products: data,
                 loading: false,
                 currentPage: 0,
+                similar: [],
                 pageCount: Math.ceil(data.length / this.state.perPage)
             }, () => this.setElementsForCurrentPage());
         })
@@ -44,6 +46,8 @@ class Products extends Component {
             }, () => this.setElementsForCurrentPage());
         })
     }
+
+
 
 
     setElementsForCurrentPage() {
