@@ -138,10 +138,7 @@ public class ProductServiceImpl implements ProductService {
         Scanner in = new Scanner(new FileInputStream("C:\\Users\\Magdalena\\OneDrive\\Web Programming\\WebProject\\demo\\similarities.csv"));
         while (in.hasNextLine()) {
             String[] parts = in.nextLine().split("\t");
-            Product product = getProduct(Long.parseLong(parts[0]));
-            List<Similar> products = new ArrayList<>();
-            products.add(new Similar(product.getId(), Long.parseLong(parts[1]), false));
-            similarRepository.save(new Similar(product.getId(), Long.parseLong(parts[1]), false));
+            similarRepository.save(new Similar(Long.parseLong(parts[0]), Long.parseLong(parts[1]), false));
         }
 
     }
@@ -581,8 +578,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean updateSimilarProduct(Long id, Long similar) {
-        return this.similarRepository.updateMostSimilar(id, similar);
+    public Similar updateSimilarProduct(Long id, Long similar) {
+        return this.similarRepository.updateMostSimilar(id, similar).get(0);
     }
 
     @Override

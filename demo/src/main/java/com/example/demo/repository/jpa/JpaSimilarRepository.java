@@ -14,7 +14,7 @@ public interface JpaSimilarRepository extends JpaRepository<Similar, Long> {
     List<Similar> findByFirstProductId(@Param("id") Long id);
 
     @Query(value = "UPDATE similarities SET most_similar = true" +
-            "  WHERE product_1 = :id_1 and product_2 = :id_2", nativeQuery=true)
-    Boolean updateMostSimilar(@Param("id") Long id_1, @Param("id") Long id_2);
+            "  WHERE product_1 = :id_1 and product_2 = :id_2 RETURNING *", nativeQuery=true)
+    List<Similar> updateMostSimilar(@Param("id_1") Long id_1, @Param("id_2") Long id_2);
 
 }

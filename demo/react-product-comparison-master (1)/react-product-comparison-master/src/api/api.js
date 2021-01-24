@@ -7,3 +7,12 @@ export const searchProducts = (display, graphicCard, internalMemory, memory, pro
 export const getSimilarToProduct = (id) => {
     return fetch(`http://localhost:8080/products/similar?id=${id}`).then(res => res.json());
 }
+
+export const setMostSimilarProduct = (id, s) => {
+    return fetch(`http://localhost:8080/products/update?id=${id}&s=${s}`,{
+            method: 'PATCH',
+    }).then(res => res.json());
+}
+
+
+

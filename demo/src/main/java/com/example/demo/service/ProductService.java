@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductDetails;
 import com.example.demo.model.ProductDto;
+import com.example.demo.model.Similar;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +19,6 @@ public interface ProductService {
     void deleteProduct(Long productId);
     List<ProductDetails> searchProducts(String display, String graphicsCard, String internalMemory, String memory, String processor, String resolution);
     List<Product> findByUrlContains(String store);
-    Boolean updateSimilarProduct(Long id, Long similar);
+    Similar updateSimilarProduct(Long id, Long similar);
     List<ProductDto> getProductAndSimilarProducts(Long id);
 }

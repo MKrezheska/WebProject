@@ -34,7 +34,7 @@ public class SimilarRepositoryImpl implements SimilarRepository {
     }
 
     @Override
-    public Boolean updateMostSimilar(Long id_1, Long id_2) {
+    public List<Similar> updateMostSimilar(Long id_1, Long id_2) {
         return this.repository.updateMostSimilar(id_1, id_2);
     }
 

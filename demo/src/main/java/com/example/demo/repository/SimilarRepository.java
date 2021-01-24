@@ -15,6 +15,6 @@ public interface SimilarRepository {
 
     List<Similar> getByProductId(Long productId);
 
-    Boolean updateMostSimilar(Long id_1, Long id_2);
+    List<Similar> updateMostSimilar(Long id_1, Long id_2);
 
 }

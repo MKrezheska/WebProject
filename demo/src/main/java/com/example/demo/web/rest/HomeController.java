@@ -3,6 +3,7 @@ package com.example.demo.web.rest;
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductDetails;
 import com.example.demo.model.ProductDto;
+import com.example.demo.model.Similar;
 import com.example.demo.model.vm.Page;
 import com.example.demo.service.ProductService;
 import org.springframework.util.MimeTypeUtils;
@@ -45,10 +46,10 @@ public class HomeController {
         return productService.getProductAndSimilarProducts(Long.parseLong(id));
     }
 
-//    @PatchMapping("/update")
-//    public Boolean updateSimilar(@RequestParam() String id, @RequestParam() String s) {
-//        return productService.updateSimilarProduct(Long.parseLong(id), Long.parseLong(s));
-//    }
+    @PatchMapping("/update")
+    public Similar updateSimilar(@RequestParam() String id, @RequestParam() String s) {
+        return productService.updateSimilarProduct(Long.parseLong(id), Long.parseLong(s));
+    }
 
 
 }

@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {setMostSimilarProduct} from "../api/api";
+import { useState } from 'react';
+
 
 const Comparison = ({products}) => {
+
 
     if(products.length >= -1) {
         let currentProduct = products[0];
@@ -65,7 +69,7 @@ const Comparison = ({products}) => {
                         {products.map(product => <td id="tab-description"
                                                      key={`description-td-${getId(product.product)}`}
                                                      className="text-center table-light">
-                            <button className="btn btn-info" onClick={() => console.log("clickhed")}>Избери</button>
+                            <button className="btn btn-info" onClick={() => setMostSimilarProduct(currentProduct.product.id, product.product.id)}>Избери</button>
                         </td>)}
                     </tr>: <tr><td colSpan={4} className="text-info small"><i>Потенцираниот производ е избран за најсличен.</i></td></tr>
                 }
