@@ -42,7 +42,7 @@ const logoPicker = (product) => {
     else return image2;
 };
 
-const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedProducts, similar}) =>
+const Product = ({product, onAddToComparison, onRemoveFromComparison, comparedProducts}) =>
     <div className="col-md-7 col-lg-3 col-sm-6">
         <div className="product">
             <div className="card" >

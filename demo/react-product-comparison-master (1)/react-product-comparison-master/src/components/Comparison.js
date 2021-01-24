@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {setMostSimilarProduct} from "../api/api";
-import { useState } from 'react';
+import {updateProduct} from "../redux/actions";
 
 
-const Comparison = ({products}) => {
-
+const Comparison = ({products, onUpdateSimilar}) => {
+    const [count, setCount] = useState(0)
+    const onClickHandler = e  => {
+        setCount(prevCount => prevCount + 1)
+    }
 
     if(products.length >= -1) {
         let currentProduct = products[0];
@@ -69,7 +72,7 @@ const Comparison = ({products}) => {
                         {products.map(product => <td id="tab-description"
                                                      key={`description-td-${getId(product.product)}`}
                                                      className="text-center table-light">
-                            <button className="btn btn-info" onClick={() => setMostSimilarProduct(currentProduct.product.id, product.product.id)}>Избери</button>
+                            <button type="button" className="btn btn-info" onClick={() => setMostSimilarProduct(currentProduct.product.id, product.product.id).then(data => data) && onUpdateSimilar(product.product.id) && onClickHandler() }>Избери</button>
                         </td>)}
                     </tr>: <tr><td colSpan={4} className="text-info small"><i>Потенцираниот производ е избран за најсличен.</i></td></tr>
                 }
@@ -82,11 +85,15 @@ const Comparison = ({products}) => {
 };
 
 Comparison.propTypes = {
-    products : PropTypes.array.isRequired
+    products : PropTypes.array.isRequired,
+    onUpdateSimilar : PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     products : state.products
+});
+const mapDispatchToProps = dispatch => ({
+    onUpdateSimilar: (mostSimilarId) => dispatch(updateProduct(mostSimilarId))
 });
 
 const getName = (product) => {
@@ -262,4 +269,4 @@ const getInternal = (product) => {
 };
 
 
-export default connect(mapStateToProps)(Comparison);
+export default connect(mapStateToProps, mapDispatchToProps)(Comparison);

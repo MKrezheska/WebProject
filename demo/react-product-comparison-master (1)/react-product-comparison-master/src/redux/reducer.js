@@ -37,6 +37,12 @@ const reducer = (state = initialState, action) => {
                 el.style.display = "none";
             }
             return {...state, products: products_2};
+
+        case constants.UPDATE_PRODUCT:
+            let products_1 = state.products;
+            products_1[0].mostSimilarId = action.mostSimilarId
+            console.log('reducer update', products_1)
+            return {...state, products: products_1};
         default :
             return state;
     }
