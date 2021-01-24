@@ -72,7 +72,11 @@ const Comparison = ({products, onUpdateSimilar}) => {
                         {products.map(product => <td id="tab-description"
                                                      key={`description-td-${getId(product.product)}`}
                                                      className="text-center table-light">
-                            <button type="button" className="btn btn-info" onClick={() => setMostSimilarProduct(currentProduct.product.id, product.product.id).then(data => data) && onUpdateSimilar(product.product.id) && onClickHandler() }>Избери</button>
+                            {   currentProduct.product.id !== product.product.id ?
+                                <button type="button" className="btn btn-info"
+                                        onClick={() => setMostSimilarProduct(currentProduct.product.id, product.product.id).then(data => data) && onUpdateSimilar(product.product.id) && onClickHandler()}>Избери</button>
+                                : null
+                            }
                         </td>)}
                     </tr>: <tr><td colSpan={4} className="text-info small"><i>Потенцираниот производ е избран за најсличен.</i></td></tr>
                 }
