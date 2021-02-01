@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
         case constants.ADD_PRODUCT:
             let products_3 = [...state.products].concat(action.products);
             console.log(products_3)
-            if (products_3.length <= 3) {
+            if (products_3.length <= 4) {
                 if (products_3.length > 0) {
                     let el = document.getElementById("tableID");
                     if (el != null) {
