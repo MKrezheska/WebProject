@@ -135,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
 
         }
 
-        Scanner in = new Scanner(new FileInputStream("C:\\Users\\Magdalena\\OneDrive\\Web Programming\\WebProject\\demo\\similarities.csv"));
+        Scanner in = new Scanner(new FileInputStream("similarities.csv"));
         while (in.hasNextLine()) {
             String[] parts = in.nextLine().split("\t");
             similarRepository.save(new Similar(Long.parseLong(parts[0]), Long.parseLong(parts[1]), false));
@@ -164,7 +164,14 @@ public class ProductServiceImpl implements ProductService {
         String resolution = "Not found";
 
         for (String property : properties) {
-            if (property.matches("(.*)[nN][vV][iI][dD][iI][aA](.*)|(.*)NVDIA(.*)|( *)GeForce(.*)|(.*)Itegrated VGA(.*)|(.*)Intel UHD (620|605)(.*)|(.*)Integrated Graphic Card(.*)|((.*)(Intel|AMD)(.*)[gG]raphics(.*))|(.*)Integrated(.*)VGA(.*)|(.*)Intel(.*)VGA(.*)|(.*)R[aA][dD][eE][oO][nN](.*)|(.*)Integrated graphics UMA(.*)|(.*)V[eE][gG][aA](.*)|(.*)Intel HD 620(.*)|(.*)UMA graphics(.*)|(.*)HD Graphics 620(.*)")) {
+            if (property.matches("(.*)[nN][vV][iI][dD][iI][aA](.*)|(.*)NVDIA(.*)|( *)GeForce(.*)|(.*)Itegrated VGA(.*)|(.*)Intel UHD (620|605)(.*)|(.*)Integrated Graphic Card(.*)|((.*)(Intel|AMD)(.*)[gG]raphics(.*))|(.*)Integrated(.*)VGA(.*)|(.*)Intel(.*)VGA(.*)|(.*)R[aA][dD][eE][oO][nN](.*)|(.*)Integrated graphics UMA(.*)|(.*)V[eE][gG][aA](.*)|(.*)Intel HD 620(.*)|(.*)UMA graphics(.*)|(.*)HD Graphics 620(.*)|HD Graphics 620|(.*)(Intel|AMD)(.*)Гр(а*)фичка карта( NVIDIA)*(.*)|(.*)GPU(.*)core(.*)|(.*)AMD RX(.*)")) {
+                if (property.contains(",")) {
+                    tmp = property.split(",");
+                    for (String s : tmp) {
+                        if (s.contains("Графичка"))
+                            graphicsCard = s.trim();
+                    }
+                }
                 if (property.contains("processor") || property.contains("Processor") || property.contains("Core")) {
                     tmp = property.split(",");
                     if (tmp.length == 1)
@@ -189,7 +196,8 @@ public class ProductServiceImpl implements ProductService {
 
                 }
             }
-            if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)")) {
+            if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)|(.*)Хард Диск(.*)|( *)512GB( *)")) {
+
                 if (fl2 == 1) {
                     String temp = memory;
                     if (!memory.trim().equals(property.trim()))
@@ -227,11 +235,11 @@ public class ProductServiceImpl implements ProductService {
                     memory = memory.replace("Т", "T");
                 }
             }
-            if (property.matches("( *)(4|8|12|16)GB( *)|(.*)DDR4(.*)|(.*)LPDDR3(.*)|( *)4GB DDR3( *)|(.*) RAM(.*)")) {
+            if (property.matches("( *)(4|8|12|16)GB( *)|(.*)DDR4(.*)|(.*)LPDDR3(.*)|( *)4GB DDR3( *)|(.*) RAM(.*)|(.*)Р[Аа][Мм] Меморија(.*)")) {
                 if (property.contains(",")) {
                     tmp = property.split(",");
                     for (String s : tmp) {
-                        if (s.contains("RAM"))
+                        if (s.contains("RAM")||s.contains("Рам"))
                             internalMemory = s.trim();
                     }
                 } else if (property.contains("Intel")) {
@@ -243,7 +251,7 @@ public class ProductServiceImpl implements ProductService {
 
                 }
             }
-            if (property.matches("(.*)(Core|Pentium|Celeron|Atom|Athlon|AMD R5|Ryzen|A4-9120C|E2124G)(.*)|( *)(i7-8565U|i3-7020U)(.*)")) {
+            if (property.matches("(.*)(Core|Pentium|Celeron|Atom|Athlon|AMD R5|AMD A4|AMD A6|Apple M1|Ryzen|A4-9120C|E2124G)(.*)|( *)(i7-8565U|i3-7020U)(.*)")) {
                 if (fl == 1) {
                     processor = property.trim();
                 } else {
@@ -261,8 +269,8 @@ public class ProductServiceImpl implements ProductService {
                 processor = processor.replaceAll("&trade;|&reg;|[)]", "");
                 processor = processor.trim();
             }
-            if (property.matches(".*[0-9]\\.?[0-9]{2,3}\\s{0,2}[xX]\\s{0,2}[0-9]\\.?[0-9]{2,3}.*|.*Dimensions.*")) {
-                Pattern p = Pattern.compile("[0-9]\\.?[0-9]{2,3}\\s{0,2}[xX]\\s{0,2}[0-9]\\.?[0-9]{2,3}");
+           if (property.matches(".*[0-9]\\.?[0-9]{2,3}\\s{0,2}[хxX]\\s{0,2}[0-9]\\.?[0-9]{2,3}.*|.*Dimensions.*")) {
+                Pattern p = Pattern.compile("[0-9]\\.?[0-9]{2,3}\\s{0,2}[хxX]\\s{0,2}[0-9]\\.?[0-9]{2,3}");
                 Matcher mt = p.matcher(property);
                 if (mt.find()) {
                     if (fl3 == 1) {

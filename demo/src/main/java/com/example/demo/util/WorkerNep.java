@@ -86,7 +86,8 @@ public class WorkerNep implements Runnable {
             java.util.logging.Logger.getLogger("org.apache.http").setLevel(java.util.logging.Level.OFF);
 
             if (this.url.contains("neptun")) {
-                String chromeDriverPath = "C:\\Users\\user\\Documents\\chromedriver_win32\\chromedriver.exe" ;
+//                String chromeDriverPath = "C:\\Users\\user\\Documents\\chromedriver_win32\\chromedriver.exe" ;
+                String chromeDriverPath = "C:\\Users\\user\\Downloads\\chromedriver_win32\\chromedriver.exe" ;
                 System.setProperty("webdriver.chrome.driver", chromeDriverPath);
                 ChromeOptions options = new ChromeOptions(); options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
                 WebDriver driverCh = new ChromeDriver(options);
