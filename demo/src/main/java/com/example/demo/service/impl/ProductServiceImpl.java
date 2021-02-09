@@ -199,6 +199,14 @@ public class ProductServiceImpl implements ProductService {
             if (property.matches("(.*)[0-9](.*)SSD(.*)|(.*)[0-9](.*)HDD(.*)|(.*)SSD(.*)[0-9](.*)|(.*)HDD(.*)[0-9](.*)|(.*)[rR][pP][mM](.*)|( *)(1TB|256GB)( *)|(.*)eMMC(.*)|(.*)SDD(.*)|(.*)Хард Диск(.*)|( *)512GB( *)")) {
 
                 if (fl2 == 1) {
+                    if (property.contains("DDR4")) {
+                        tmp = property.split("upgrade");
+                        for (String s : tmp) {
+                            if (s.contains("Диск"))
+                                property = s.trim();
+//                        }
+                        }
+                    }
                     String temp = memory;
                     if (!memory.trim().equals(property.trim()))
                         temp = temp + " +  " + property;
@@ -227,6 +235,13 @@ public class ProductServiceImpl implements ProductService {
                         }
                     } else
                         memory = property.trim();
+                    if (memory.contains("DDR4")) {
+                        tmp = memory.split("upgrade");
+                        for (String s : tmp) {
+                            if (s.contains("Диск"))
+                                memory = s.trim();
+                        }
+                    }
                 }
                 if (memory.contains("+")) {
                     memory = "TwoHDD: " + memory;
@@ -249,6 +264,13 @@ public class ProductServiceImpl implements ProductService {
                 } else {
                     internalMemory = property.trim();
 
+                }
+                if (property.contains("Диск")) {
+                    tmp = property.split("\\(");
+//                        for (String s : tmp) {
+//                            if (s.contains("Графичка"))
+                    internalMemory = tmp[0].trim();
+//                        }
                 }
             }
             if (property.matches("(.*)(Core|Pentium|Celeron|Atom|Athlon|AMD R5|AMD A4|AMD A6|Apple M1|Ryzen|A4-9120C|E2124G)(.*)|( *)(i7-8565U|i3-7020U)(.*)")) {
