@@ -189,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
                     graphicsCard = graphicsCard.replace("NVDIA", "nVidia");
                 }
                 String temp = graphicsCard.toLowerCase();
-                if (temp.contains("vega") || temp.contains("itegrated") || temp.contains("integrated") || temp.contains("intel") || temp.contains("uma")) {
+                if (temp.contains("vega") || temp.contains("itegrated") || temp.contains("integrated") || temp.contains("intel") || temp.contains("uma") || temp.contains("gpu")) {
                     graphicsCard = "Integrated: " + graphicsCard;
                 } else if (temp.contains("nvidia") | temp.contains("geforce") || temp.contains("radeon")) {
                     graphicsCard = "Dedicated: " + graphicsCard;
